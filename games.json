@@ -1,0 +1,44 @@
+{
+	"games": [
+		{
+			"title": "Cooties",
+			"blurb": "Physics-driven multiplayer mayhem. Dodge the outbreak, shove your friends, and whatever you do, don't catch the cooties.",
+			"path": "/home/mark/Desktop/My Games/cooties/Cooties.x86_64"
+		},
+		{
+			"title": "Farwild",
+			"blurb": "Venture deep into a vast, untamed wilderness. Explore sprawling terrain, live off the land, and see how far into the wild you can go.",
+			"path": "/home/mark/Desktop/My Games/farwild/farwild.x86_64"
+		},
+		{
+			"title": "Mini Marchers",
+			"blurb": "Command tiny troops as they march into battle. Pint-sized soldiers, full-sized strategy.",
+			"path": "/home/mark/Desktop/My Games/mini-marchers.x86_64"
+		},
+		{
+			"title": "MPDC",
+			"blurb": "A compact and mysterious experiment. Jump in and see what MPDC has in store.",
+			"path": "/home/mark/Desktop/My Games/MPDC/mpdc.x86_64"
+		},
+		{
+			"title": "Prop Hunt",
+			"blurb": "Classic hide-and-seek with a twist: disguise yourself as an everyday object and blend in, or hunt down the props before time runs out.",
+			"path": "/home/mark/Desktop/My Games/prophunt/prophunt.x86_64"
+		},
+		{
+			"title": "Protocol TD",
+			"blurb": "Defend the network in this tower defense. Route power, place turrets, and hold the line against the incoming breach.",
+			"path": "/home/mark/Desktop/My Games/protocoltd/ProtocolTD.x86_64"
+		},
+		{
+			"title": "Survival Idle",
+			"blurb": "Gather, build, and automate. An idle survival game that keeps on working even when you aren't.",
+			"path": "/home/mark/Desktop/My Games/SurvivalIdle.x86_64"
+		},
+		{
+			"title": "uMORPG",
+			"blurb": "A homegrown MMORPG experiment. Create a hero and wander a persistent online world of your own making.",
+			"path": "/home/mark/Desktop/My Games/uMORPG/uMORPG.x86_64"
+		}
+	]
+}
