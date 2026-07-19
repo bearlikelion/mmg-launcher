@@ -9,6 +9,7 @@ category = 4
 title = "Boomer Shooter"
 description = "A retro FPS built in the open. Fast movement, big guns, and all the source code to go with them."
 date = "2026"
+dev_time = "3h"
 features = PackedStringArray("Open Source", "FPS")
 controls = {
 "a": "Jump",

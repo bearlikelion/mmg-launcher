@@ -70,7 +70,6 @@ scroll_active = false
 
 [node name="SubHeader" type="RichTextLabel" parent="Margin/Layout" unique_id=58524435]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 24

@@ -9,8 +9,8 @@ enabled = true
 category = 0
 title = "SurvivalScape"
 description = "A roguelike with random upgrades and a seeded weekly challenge. Every run is different: stack upgrades, survive the waves, and climb the weekly leaderboard."
-date = "2024-07-22"
-dev_time = ""
+date = "July 22, 2024"
+dev_time = "236h"
 features = PackedStringArray("Roguelike", "Random Upgrades", "Weekly Challenge", "Multiplayer")
 controls = {
 "back": "HD Backgrounds",

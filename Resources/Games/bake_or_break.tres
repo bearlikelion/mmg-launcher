@@ -1,17 +1,22 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://dnw73wm8m2y0h"]
 
-[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
-[ext_resource type="Texture2D" path="res://Assets/Covers/bakeorbreak.png" id="2"]
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://rvt3cnxm8ptr" path="res://Assets/Covers/bakeorbreak.png" id="2"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
 category = 2
 title = "Bake or Break"
 description = "A horror biscuit-baking dice-rolling roguelike. Kidnapped by a witch, you bake to her exacting standards while managing your fear. Made for Brackeys Game Jam 2025.2."
-date = "2025-08"
-dev_time = ""
+date = "August 2025"
+dev_time = "2.5h"
 features = PackedStringArray("Dice Roguelike", "Horror", "Game Jam")
+controls = {
+"a": "Select",
+"b": "Cancel",
+"dpad": "Navigate",
+"left_stick": "Navigate",
+"start": "Pause"
+}
 cover_image = ExtResource("2")
 executable_path = "Games/BakeOrBreak/bake-or-break.x86_64"
-steam_id = ""

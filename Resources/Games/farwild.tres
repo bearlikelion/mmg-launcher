@@ -10,6 +10,7 @@ enabled = true
 category = 3
 title = "Farwild"
 description = "Venture deep into a vast, untamed wilderness. Explore sprawling terrain, live off the land, and see how far into the wild you can go."
+dev_time = "21.5h"
 features = PackedStringArray("Exploration", "Survival")
 cover_image = ExtResource("2")
 media = Array[Resource]([ExtResource("3")])

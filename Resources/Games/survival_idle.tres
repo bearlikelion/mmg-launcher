@@ -10,8 +10,16 @@ category = 1
 title = "Survival Idle"
 description = "Survive or die. A tiny roguelike autoshooter that fights for itself, fullscreen or perched on your desktop while you work."
 date = ""
-dev_time = ""
+dev_time = "1.9h"
 features = PackedStringArray("Autobattler", "Roguelike", "Desktop Pet")
+controls = {
+"a": "Select",
+"b": "Back",
+"dpad": "Navigate",
+"lb": "Prev Tab",
+"left_stick": "Navigate",
+"rb": "Next Tab"
+}
 cover_image = ExtResource("2")
 executable_path = "Games/SurvivalIdle/SurvivalIdle.x86_64"
 steam_id = ""

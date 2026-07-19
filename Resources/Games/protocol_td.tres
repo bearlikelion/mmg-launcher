@@ -10,7 +10,7 @@ category = 1
 title = "Protocol TD"
 description = "A randomized maze tower defense for 1 to 8 players. Every run rolls a fresh maze, so there are no memorized builds, only adaptation."
 date = ""
-dev_time = ""
+dev_time = "25m"
 features = PackedStringArray("Tower Defense", "Co-op 1-8", "Procedural")
 controls = {
 "a": "Place Turret",

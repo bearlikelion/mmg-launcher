@@ -8,7 +8,8 @@ script = ExtResource("1")
 category = 4
 title = "Cooties"
 description = "Physics-driven multiplayer mayhem. Dodge the outbreak, shove your friends, and whatever you do, don't catch the cooties."
-date = "2025-12-31"
+date = "December 31, 2025"
+dev_time = "3.8h"
 features = PackedStringArray("Multiplayer", "Physics", "Open Source")
 controls = {
 "a": "Jump",

@@ -9,6 +9,7 @@ enabled = true
 category = 1
 title = "Mini Marchers"
 description = "Command tiny troops as they march into battle. Pint-sized soldiers, full-sized strategy."
+dev_time = "4.9h"
 features = PackedStringArray("Strategy", "Auto Battler")
 controls = {
 "lb": "Snap To Castle",

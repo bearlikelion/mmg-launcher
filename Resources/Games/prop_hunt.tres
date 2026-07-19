@@ -11,6 +11,7 @@ enabled = true
 category = 3
 title = "Prop Hunt"
 description = "Classic hide-and-seek with a twist: disguise yourself as an everyday object and blend in, or hunt down the props before time runs out."
+dev_time = "17h"
 features = PackedStringArray("Multiplayer", "Hide & Seek")
 cover_image = ExtResource("2")
 media = Array[Resource]([ExtResource("3"), ExtResource("4")])

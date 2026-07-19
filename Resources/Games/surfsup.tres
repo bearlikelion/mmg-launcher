@@ -9,9 +9,20 @@ enabled = true
 category = 0
 title = "SurfsUp"
 description = "A free-to-play, high-speed multiplayer platformer where precision movement and air-surfing are the keys to setting your personal best time, or even breaking a world record."
-date = "2025-07-27"
-dev_time = ""
+date = "July 27, 2025"
+dev_time = "8.3h"
 features = PackedStringArray("Multiplayer", "Surf Movement", "Custom Maps", "Free to Play")
+controls = {
+"a": "Jump",
+"b": "Duck / Slide",
+"back": "Scoreboard",
+"l3": "Sprint",
+"left_stick": "Move",
+"right_stick": "Look",
+"start": "Pause",
+"x": "Use",
+"y": "Restart"
+}
 cover_image = ExtResource("2")
 executable_path = ""
 steam_id = "3454830"

@@ -9,8 +9,8 @@ enabled = true
 category = 1
 title = "DARKWEAVE"
 description = "A retro-styled 3D action RPG inspired by the Soulsborne games. Lock-on duels, stamina-paced melee, and dithered low-res dread."
-date = "2026-07"
-dev_time = ""
+date = "July 2026"
+dev_time = "1h"
 features = PackedStringArray("Soulslike", "Action RPG", "Retro 3D")
 controls = {
 "b": "Dodge",

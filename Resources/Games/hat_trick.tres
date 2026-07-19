@@ -9,8 +9,15 @@ enabled = true
 category = 1
 title = "Hat-Trick"
 description = "A dice-driven deck building card battler where every play is a roll of fate. Cards cost time, damage rides on the die, and your deck is your health pool."
-date = "2024-08"
+date = "August 2024"
+dev_time = "1.3h"
 developer = "bearlikelion :: Vixie"
 features = PackedStringArray("Deck Building", "Dice", "Card Battler")
+controls = {
+"a": "Play Card / Click",
+"b": "Back",
+"dpad": "Navigate Cards",
+"left_stick": "Move Cursor"
+}
 cover_image = ExtResource("2")
 executable_path = "/home/mark/Source/Godot/Projects/mmg-launcher/Build/Games/Hat-Trick/Hat-Trick.x86_64"
