@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://bw8175shadmtf" path="res://Assets/Fonts/JetBrainsMono-ExtraBold.ttf" id="4"]
 [ext_resource type="PackedScene" path="res://Scenes/playing_overlay/playing_overlay.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://kwnkeuapfhjw" path="res://Scenes/feedback_survey/feedback_survey.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://Scenes/quit_dialog/quit_dialog.tscn" id="7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kry3j"]
 content_margin_left = 24.0
@@ -116,6 +117,10 @@ unique_name_in_owner = true
 layout_mode = 1
 
 [node name="FeedbackSurvey" parent="." unique_id=206824262 instance=ExtResource("6")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="QuitDialog" parent="." instance=ExtResource("7")]
 unique_name_in_owner = true
 layout_mode = 1
 

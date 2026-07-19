@@ -1,7 +1,7 @@
 class_name Launcher
 extends Control
 
-enum State { ROW, DETAIL, PLAYING, SURVEY }
+enum State { ROW, DETAIL, PLAYING, SURVEY, QUIT_CONFIRM }
 
 const CARD_SCENE: PackedScene = preload("res://Scenes/game_card/game_card.tscn")
 const LIBRARY_PATH: String = "res://Resources/game_library.tres"
@@ -38,6 +38,7 @@ var _running_pid: int = -1
 var _steam_started_msec: int = 0
 var _session_started_msec: int = 0
 var _cards: Array[GameCard] = []
+var _quit_return_focus: Control = null
 
 
 # Build the row of cards, bind controller buttons, and play the entrance animation
@@ -46,6 +47,8 @@ func _ready() -> void:
 	%DetailView.launch_requested.connect(_on_launch_requested)
 	%DetailView.closed.connect(_on_detail_closed)
 	%FeedbackSurvey.finished.connect(_on_survey_finished)
+	%QuitDialog.confirmed.connect(_on_quit_confirmed)
+	%QuitDialog.cancelled.connect(_on_quit_cancelled)
 	%ProcessTimer.timeout.connect(_on_process_timer_timeout)
 	_library = load(LIBRARY_PATH) as GameLibrary
 	if _library != null:
@@ -75,11 +78,35 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventKey:
 			var key_event: InputEventKey = event as InputEventKey
 			if key_event.pressed and key_event.keycode == KEY_ESCAPE:
-				get_tree().quit()
+				get_viewport().set_input_as_handled()
+				_prompt_quit()
 		elif event is InputEventJoypadButton:
 			var joy_event: InputEventJoypadButton = event as InputEventJoypadButton
 			if joy_event.pressed and joy_event.button_index == JOY_BUTTON_START:
-				get_tree().quit()
+				get_viewport().set_input_as_handled()
+				_prompt_quit()
+
+
+# Ask for confirmation before closing the launcher
+func _prompt_quit() -> void:
+	_state = State.QUIT_CONFIRM
+	_quit_return_focus = get_viewport().gui_get_focus_owner()
+	%QuitDialog.open()
+
+
+# Close the launcher once the player confirms
+func _on_quit_confirmed() -> void:
+	get_tree().quit()
+
+
+# Return to browsing when quitting is cancelled
+func _on_quit_cancelled() -> void:
+	_state = State.ROW
+	if _quit_return_focus != null and is_instance_valid(_quit_return_focus):
+		_quit_return_focus.grab_focus.call_deferred()
+	elif _cards.size() > 0:
+		_cards[0].grab_focus.call_deferred()
+	_quit_return_focus = null
 
 
 # Restore fullscreen on refocus, and treat a refocus during a Steam session as the game ending
