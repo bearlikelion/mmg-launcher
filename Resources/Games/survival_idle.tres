@@ -1,16 +1,15 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://djaa7ue2n5ym7"]
 
-[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
-[ext_resource type="Texture2D" path="res://Assets/Covers/survivalidle.png" id="2"]
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://b1v5uy08urlg5" path="res://Assets/Covers/survivalidle.png" id="2"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
-category = 1
 title = "Survival Idle"
-description = "Survive or die. A tiny roguelike autoshooter that fights for itself, fullscreen or perched on your desktop while you work."
-date = ""
-dev_time = "1.9h"
+description = "A tiny roguelike autoshooter idle / incremental desktop pet where the game can be entirely automated or influenced"
+date = "November 2025"
+dev_time = "41.7h"
+developer = "bearlikelion :: RunnyBabb1t"
 features = PackedStringArray("Autobattler", "Roguelike", "Desktop Pet")
 controls = {
 "a": "Select",
@@ -22,4 +21,3 @@ controls = {
 }
 cover_image = ExtResource("2")
 executable_path = "Games/SurvivalIdle/SurvivalIdle.x86_64"
-steam_id = ""

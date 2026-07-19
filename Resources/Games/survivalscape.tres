@@ -1,16 +1,16 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://db0dy7drqevdd"]
 
-[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
-[ext_resource type="Texture2D" path="res://Assets/Covers/survivalscape.jpg" id="2"]
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://iua4hq8ni2y2" path="res://Assets/Covers/survivalscape.jpg" id="2"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
 category = 0
 title = "SurvivalScape"
-description = "A roguelike with random upgrades and a seeded weekly challenge. Every run is different: stack upgrades, survive the waves, and climb the weekly leaderboard."
-date = "July 22, 2024"
-dev_time = "236h"
+description = "A roguelike survivorslike where you go from zero to hero in this bullet hell to bullet heaven. Leaderboard, weekly challenge, and co-op!"
+date = "July 22 2024"
+dev_time = "504.5h"
+developer = "bearlikelion :: CarinaMachina"
 features = PackedStringArray("Roguelike", "Random Upgrades", "Weekly Challenge", "Multiplayer")
 controls = {
 "back": "HD Backgrounds",
@@ -22,5 +22,4 @@ controls = {
 "x": "Character Stats"
 }
 cover_image = ExtResource("2")
-executable_path = ""
 steam_id = "2862660"

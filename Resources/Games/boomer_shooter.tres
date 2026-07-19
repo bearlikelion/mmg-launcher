@@ -7,10 +7,11 @@
 script = ExtResource("1")
 category = 4
 title = "Boomer Shooter"
-description = "A retro FPS built in the open. Fast movement, big guns, and all the source code to go with them."
-date = "2026"
-dev_time = "3h"
-features = PackedStringArray("Open Source", "FPS")
+description = "An open source (MIT) project to learn about state machines and 3D game development. "
+date = "June 2024"
+dev_time = "11.1h"
+developer = "bearlikelion"
+features = PackedStringArray("Open Source", "FPS", "State Machine", "Radial Menu")
 controls = {
 "a": "Jump",
 "b": "Crouch",

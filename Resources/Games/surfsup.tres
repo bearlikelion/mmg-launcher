@@ -1,16 +1,16 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://8jlgfguwu3oq"]
 
-[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
-[ext_resource type="Texture2D" path="res://Assets/Covers/surfsup.jpg" id="2"]
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dkum5mw4bshgk" path="res://Assets/Covers/surfsup.jpg" id="2"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
 category = 0
 title = "SurfsUp"
-description = "A free-to-play, high-speed multiplayer platformer where precision movement and air-surfing are the keys to setting your personal best time, or even breaking a world record."
-date = "July 27, 2025"
-dev_time = "8.3h"
+description = "A multiplayer free-to-play recreation of Counter-Strike Surf in the Godot Game Engine"
+date = "July 7 2025"
+dev_time = "1722.03h"
+developer = "bearlikelion :: Nerdiful :: CarinaMachina"
 features = PackedStringArray("Multiplayer", "Surf Movement", "Custom Maps", "Free to Play")
 controls = {
 "a": "Jump",
@@ -24,5 +24,4 @@ controls = {
 "y": "Restart"
 }
 cover_image = ExtResource("2")
-executable_path = ""
 steam_id = "3454830"

@@ -1,16 +1,16 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3 uid="uid://corxm3brugps3"]
+[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://corxm3brugps3"]
 
 [ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cdxxt182gfcn0" path="res://Assets/Covers/minimarchers.png" id="2"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
-category = 1
 title = "Mini Marchers"
-description = "Command tiny troops as they march into battle. Pint-sized soldiers, full-sized strategy."
-dev_time = "4.9h"
-features = PackedStringArray("Strategy", "Auto Battler")
+description = "Teaching a SurfsUp community mapper Godot and git by working together on a small RTS autobattler, WITH MULTIPLAYER!"
+date = "August 2025"
+dev_time = "16h"
+developer = "bearlikelion :: Spanky"
+features = PackedStringArray("Strategy", "Auto Battler", "Multiplayer (ENET / Steam)")
 controls = {
 "lb": "Snap To Castle",
 "left_stick": "Pan Camera",

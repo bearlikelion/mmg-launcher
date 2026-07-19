@@ -1,17 +1,20 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://cjlwawqrqudeg"]
 
-[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
-[ext_resource type="Texture2D" path="res://Assets/Covers/metromacarena.png" id="2"]
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://ctdm8vkyrcqo6" path="res://Assets/Covers/metromacarena.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://cm5mqw5my3gcf" path="res://Assets/QR/hazardpay_wishlist.png" id="3"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
 category = 2
 title = "Metro Macarena"
-description = "Board your train and get home as fast as you can. Avoid the other passengers if possible. A PSX-styled commute made with Smitner for Indie Game Clinic COLLAB JAM '26."
-date = "2026"
-dev_time = ""
+description = "COLLAB JAM '26.
+Board your train to get home as fast as you can. Avoid the other passengers if possible. A PSX-styled commute simulation made with Smitner, the developer of Hazard Pay. "
+date = "May 2026"
+dev_time = "39h"
+developer = "bearlikelion :: Smitner"
+wishlist_url = "https://store.steampowered.com/app/2692620/Hazard_Pay/?utm_source=surfsup"
+qr_code = ExtResource("3")
 features = PackedStringArray("Game Jam", "PSX Style", "Collab")
 cover_image = ExtResource("2")
 executable_path = "Games/metro-macarena/metro-macarena.x86_64"
-steam_id = ""

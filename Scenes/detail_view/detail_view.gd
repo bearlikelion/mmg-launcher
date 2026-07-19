@@ -117,7 +117,8 @@ func _meta_bbcode(game: GameInfo) -> String:
 	if not game.dev_time.is_empty():
 		rows.append(_meta_row("dev_time", game.dev_time, Gruvbox.FG))
 	if not game.wishlist_url.is_empty():
-		rows.append(_meta_row("wishlist", game.wishlist_url.trim_prefix("https://"), Gruvbox.YELLOW))
+		var display_url: String = game.wishlist_url.trim_prefix("https://").split("?")[0]
+		rows.append(_meta_row("wishlist", display_url, Gruvbox.YELLOW))
 	if not game.features.is_empty():
 		var joined: String = " [color=#%s]::[/color] " % Gruvbox.BG3.to_html(false)
 		var feature_list: Array[String] = []

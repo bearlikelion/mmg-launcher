@@ -7,9 +7,10 @@
 script = ExtResource("1")
 category = 2
 title = "Bake or Break"
-description = "A horror biscuit-baking dice-rolling roguelike. Kidnapped by a witch, you bake to her exacting standards while managing your fear. Made for Brackeys Game Jam 2025.2."
+description = "Brackeys Game Jam 2025.2. A horror biscuit-baking dice-rolling roguelike. Kidnapped by a witch, you bake to her exacting standards while managing your fear."
 date = "August 2025"
-dev_time = "2.5h"
+dev_time = "31.7h"
+developer = "bearlikelion :: OPNewPlayer :: Nerdiful"
 features = PackedStringArray("Dice Roguelike", "Horror", "Game Jam")
 controls = {
 "a": "Select",

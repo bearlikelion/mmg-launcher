@@ -7,15 +7,10 @@
 script = ExtResource("1")
 category = 4
 title = "Cooties"
-description = "Physics-driven multiplayer mayhem. Dodge the outbreak, shove your friends, and whatever you do, don't catch the cooties."
-date = "December 31, 2025"
-dev_time = "3.8h"
-features = PackedStringArray("Multiplayer", "Physics", "Open Source")
-controls = {
-"a": "Jump",
-"dpad": "Move",
-"left_stick": "Move",
-"start": "Pause"
-}
+description = "Open Source (MIT) multiplayer physics based platformer to teach people Multiplayer in Godot"
+date = "December 2025"
+dev_time = "17.9h"
+developer = "bearlikelion"
+features = PackedStringArray("Open Source", "Multiplayer", "Physics")
 cover_image = ExtResource("2")
 executable_path = "/home/mark/Source/Godot/Projects/mmg-launcher/Build/Games/Cooties/Cooties.x86_64"
