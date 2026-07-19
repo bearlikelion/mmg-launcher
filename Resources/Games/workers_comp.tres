@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=5 format=3 uid="uid://cwcqr8xnfwl27"]
+
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dvcmhitl5yeuc" path="res://Assets/Covers/workerscomp.jpg" id="2"]
+[ext_resource type="VideoStreamMP4" uid="uid://riuk87e1506x" path="res://Assets/Videos/Workers Comp/trailer.mp4" id="3"]
+[ext_resource type="Texture2D" uid="uid://dxie6qyman6ip" path="res://Assets/QR/workerscomp_wishlist.png" id="4"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 3
+title = "Workers Comp"
+description = "A sci-fi co-op game for up to 4 players. Rush into dangerous high-tech facilities and fix their broken systems before they collapse around you!"
+date = "coming soon"
+developer = "SwAAn :: Feline Fowl"
+wishlist_url = "https://s.team/a/4044080"
+qr_code = ExtResource("4")
+features = PackedStringArray("Co-op", "4 Players", "Sci-Fi")
+cover_image = ExtResource("2")
+media = Array[Resource]([ExtResource("3")])

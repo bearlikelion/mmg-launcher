@@ -1,8 +1,10 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" uid="uid://blxvaobt56ucb" path="res://Scenes/detail_view/detail_view.gd" id="1"]
 [ext_resource type="FontFile" path="res://Assets/Fonts/JetBrainsMono-Bold.ttf" id="2"]
 [ext_resource type="FontFile" path="res://Assets/Fonts/JetBrainsMono-ExtraBold.ttf" id="3"]
+[ext_resource type="PackedScene" path="res://Scenes/video_player/video_player.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://Scenes/controls_view/controls_view.tscn" id="5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_window"]
 content_margin_left = 1.0
@@ -93,6 +95,22 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qr_panel"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.101961, 0.113725, 0.117647, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.980392, 0.741176, 0.184314, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play_disabled"]
 content_margin_left = 26.0
@@ -300,6 +318,37 @@ bbcode_enabled = true
 fit_content = true
 scroll_active = false
 
+[node name="WishlistPanel" type="PanelContainer" parent="Center/Window/WindowVBox/Body/BodyVBox/ContentRow/InfoColumn"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qr_panel")
+
+[node name="WishlistRow" type="HBoxContainer" parent="Center/Window/WindowVBox/Body/BodyVBox/ContentRow/InfoColumn/WishlistPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="QRImage" type="TextureRect" parent="Center/Window/WindowVBox/Body/BodyVBox/ContentRow/InfoColumn/WishlistPanel/WishlistRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(132, 132)
+layout_mode = 2
+mouse_filter = 2
+texture_filter = 1
+expand_mode = 1
+stretch_mode = 5
+
+[node name="WishlistText" type="RichTextLabel" parent="Center/Window/WindowVBox/Body/BodyVBox/ContentRow/InfoColumn/WishlistPanel/WishlistRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 17
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
 [node name="FooterRow" type="HBoxContainer" parent="Center/Window/WindowVBox/Body/BodyVBox"]
 layout_mode = 2
 theme_override_constants/separation = 16
@@ -313,6 +362,19 @@ mouse_filter = 2
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
+
+[node name="ControlsButton" type="Button" parent="Center/Window/WindowVBox/Body/BodyVBox/FooterRow"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0.513726, 0.647059, 0.596078, 1)
+theme_override_colors/font_hover_color = Color(0.513726, 0.647059, 0.596078, 1)
+theme_override_colors/font_focus_color = Color(0.513726, 0.647059, 0.596078, 1)
+theme_override_colors/font_pressed_color = Color(0.513726, 0.647059, 0.596078, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 22
+text = "✚  CONTROLS"
 
 [node name="PlayButton" type="Button" parent="Center/Window/WindowVBox/Body/BodyVBox/FooterRow"]
 unique_name_in_owner = true
@@ -331,3 +393,11 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_play_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_play_hover")
 theme_override_styles/normal = SubResource("StyleBoxFlat_play_normal")
 text = "▶  PLAY"
+
+[node name="ControlsOverlay" parent="." instance=ExtResource("5")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="VideoOverlay" parent="." instance=ExtResource("4")]
+unique_name_in_owner = true
+layout_mode = 1

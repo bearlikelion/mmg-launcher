@@ -1,0 +1,340 @@
+[gd_scene format=3 uid="uid://kwnkeuapfhjw"]
+
+[ext_resource type="Script" uid="uid://cty5umbpa8mgw" path="res://Scenes/feedback_survey/feedback_survey.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://bw8175shadmtf" path="res://Assets/Fonts/JetBrainsMono-ExtraBold.ttf" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_window"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.113725, 0.12549, 0.129412, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.313726, 0.286275, 0.270588, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_term_bar"]
+content_margin_left = 16.0
+content_margin_top = 11.0
+content_margin_right = 16.0
+content_margin_bottom = 11.0
+bg_color = Color(0.235294, 0.219608, 0.211765, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_entry_window"]
+content_margin_left = 24.0
+content_margin_top = 18.0
+content_margin_right = 24.0
+content_margin_bottom = 18.0
+bg_color = Color(0.113725, 0.12549, 0.129412, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.980392, 0.741176, 0.184314, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_entry_display"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.0862745, 0.0862745, 0.0862745, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.313726, 0.286275, 0.270588, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="FeedbackSurvey" type="Control" unique_id=1521653012]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=283497518]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.113725, 0.12549, 0.129412, 0.96)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=512462688]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Window" type="PanelContainer" parent="Center" unique_id=953815893]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1080, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_window")
+
+[node name="WindowVBox" type="VBoxContainer" parent="Center/Window" unique_id=828154584]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TermBar" type="PanelContainer" parent="Center/Window/WindowVBox" unique_id=1904886625]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_term_bar")
+
+[node name="TermTitle" type="Label" parent="Center/Window/WindowVBox/TermBar" unique_id=310082612]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.513726, 0.454902, 1)
+theme_override_font_sizes/font_size = 17
+text = "~/games/feedback"
+horizontal_alignment = 1
+
+[node name="Body" type="MarginContainer" parent="Center/Window/WindowVBox" unique_id=2066918709]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 18
+
+[node name="BodyVBox" type="VBoxContainer" parent="Center/Window/WindowVBox/Body" unique_id=1202393285]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PromptLine" type="RichTextLabel" parent="Center/Window/WindowVBox/Body/BodyVBox" unique_id=1885110188]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="SurveyTitle" type="Label" parent="Center/Window/WindowVBox/Body/BodyVBox" unique_id=1257566005]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980392, 0.741176, 0.184314, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 30
+text = "HOW WAS IT?"
+
+[node name="QuestionList" type="VBoxContainer" parent="Center/Window/WindowVBox/Body/BodyVBox" unique_id=44632047]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="FooterRow" type="HBoxContainer" parent="Center/Window/WindowVBox/Body/BodyVBox" unique_id=517476918]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="StatusLine" type="RichTextLabel" parent="Center/Window/WindowVBox/Body/BodyVBox/FooterRow" unique_id=1909240971]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 17
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="SkipButton" type="Button" parent="Center/Window/WindowVBox/Body/BodyVBox/FooterRow" unique_id=1851191029]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "SKIP"
+
+[node name="SaveButton" type="Button" parent="Center/Window/WindowVBox/Body/BodyVBox/FooterRow" unique_id=1509588356]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "✔  SAVE"
+
+[node name="HintLine" type="Label" parent="Center/Window/WindowVBox/Body/BodyVBox" unique_id=1562759369]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.513726, 0.454902, 1)
+theme_override_font_sizes/font_size = 14
+text = "D-Pad: Move      A / Enter: Select      B: Skip"
+
+[node name="PromptLayer" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PromptCenter" type="CenterContainer" parent="PromptLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PromptWindow" type="PanelContainer" parent="PromptLayer/PromptCenter"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(720, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_window")
+
+[node name="PromptVBox" type="VBoxContainer" parent="PromptLayer/PromptCenter/PromptWindow"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PromptTermBar" type="PanelContainer" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_term_bar")
+
+[node name="PromptTermTitle" type="Label" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox/PromptTermBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.513726, 0.454902, 1)
+theme_override_font_sizes/font_size = 17
+text = "~/games/feedback"
+horizontal_alignment = 1
+
+[node name="PromptBody" type="MarginContainer" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 20
+
+[node name="PromptBodyVBox" type="VBoxContainer" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox/PromptBody"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="PromptText" type="RichTextLabel" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox/PromptBody/PromptBodyVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="PromptTitle" type="Label" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox/PromptBody/PromptBodyVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980392, 0.741176, 0.184314, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 30
+text = "GOT A MINUTE?"
+
+[node name="PromptSubtitle" type="Label" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox/PromptBody/PromptBodyVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.835294, 0.768627, 0.631373, 1)
+theme_override_font_sizes/font_size = 18
+text = "your feedback shapes these prototypes"
+
+[node name="PromptButtonRow" type="HBoxContainer" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox/PromptBody/PromptBodyVBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 2
+
+[node name="FeedbackButton" type="Button" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox/PromptBody/PromptBodyVBox/PromptButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "✎  GIVE FEEDBACK"
+
+[node name="BackButton" type="Button" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox/PromptBody/PromptBodyVBox/PromptButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "↩  BACK TO LAUNCHER"
+
+[node name="PromptHint" type="Label" parent="PromptLayer/PromptCenter/PromptWindow/PromptVBox/PromptBody/PromptBodyVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.513726, 0.454902, 1)
+theme_override_font_sizes/font_size = 14
+text = "A / Enter: Select      B: Back to launcher"
+
+[node name="EntryLayer" type="Control" parent="." unique_id=863281209]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EntryDim" type="ColorRect" parent="EntryLayer" unique_id=2058508174]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0705882, 0.0784314, 0.0784314, 0.9)
+
+[node name="EntryCenter" type="CenterContainer" parent="EntryLayer" unique_id=838979086]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EntryWindow" type="PanelContainer" parent="EntryLayer/EntryCenter" unique_id=1146861316]
+custom_minimum_size = Vector2(760, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_entry_window")
+
+[node name="EntryVBox" type="VBoxContainer" parent="EntryLayer/EntryCenter/EntryWindow" unique_id=1164602718]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="EntryTitle" type="Label" parent="EntryLayer/EntryCenter/EntryWindow/EntryVBox" unique_id=1490423663]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.980392, 0.741176, 0.184314, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 24
+text = "who are you?"
+
+[node name="EntryPanel" type="PanelContainer" parent="EntryLayer/EntryCenter/EntryWindow/EntryVBox" unique_id=1296948733]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_entry_display")
+
+[node name="EntryDisplay" type="Label" parent="EntryLayer/EntryCenter/EntryWindow/EntryVBox/EntryPanel" unique_id=994865689]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.921569, 0.858824, 0.698039, 1)
+theme_override_font_sizes/font_size = 19
+text = "▌"
+autowrap_mode = 3
+
+[node name="KeyRows" type="VBoxContainer" parent="EntryLayer/EntryCenter/EntryWindow/EntryVBox" unique_id=368653210]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="EntryHint" type="Label" parent="EntryLayer/EntryCenter/EntryWindow/EntryVBox" unique_id=2054109759]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.513726, 0.454902, 1)
+theme_override_font_sizes/font_size = 14
+text = "A: Type      B / Enter: Done      or just use a real keyboard"
+horizontal_alignment = 1

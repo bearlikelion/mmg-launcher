@@ -10,5 +10,19 @@ title = "Boomer Shooter"
 description = "A retro FPS built in the open. Fast movement, big guns, and all the source code to go with them."
 date = "2026"
 features = PackedStringArray("Open Source", "FPS")
+controls = {
+"a": "Jump",
+"b": "Crouch",
+"dpad": "Weapons 1-3",
+"l3": "Sprint",
+"lb": "Weapon Wheel",
+"left_stick": "Move",
+"lt": "Aim",
+"right_stick": "Look",
+"rt": "Attack",
+"start": "Exit",
+"x": "Reload",
+"y": "Interact"
+}
 cover_image = ExtResource("2")
 executable_path = "/home/mark/Source/Godot/Projects/mmg-launcher/Build/Games/boomershooter/boomershooter.x86_64"

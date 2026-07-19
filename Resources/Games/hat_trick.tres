@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3 uid="uid://dyq7hattr1ck0"]
+
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://b26413ewf3dnx" path="res://Assets/Covers/hattrick.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 1
+title = "Hat-Trick"
+description = "A dice-driven deck building card battler where every play is a roll of fate. Cards cost time, damage rides on the die, and your deck is your health pool."
+date = "2024-08"
+developer = "bearlikelion :: Vixie"
+features = PackedStringArray("Deck Building", "Dice", "Card Battler")
+cover_image = ExtResource("2")
+executable_path = "/home/mark/Source/Godot/Projects/mmg-launcher/Build/Games/Hat-Trick/Hat-Trick.x86_64"

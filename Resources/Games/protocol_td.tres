@@ -12,6 +12,21 @@ description = "A randomized maze tower defense for 1 to 8 players. Every run rol
 date = ""
 dev_time = ""
 features = PackedStringArray("Tower Defense", "Co-op 1-8", "Procedural")
+controls = {
+"a": "Place Turret",
+"b": "Cancel",
+"back": "Game Speed",
+"dpad": "Move Cursor",
+"lb": "Prev Turret",
+"left_stick": "Move Cursor",
+"lt": "Zoom Out",
+"rb": "Next Turret",
+"right_stick": "Pan Camera",
+"rt": "Zoom In",
+"start": "Pause",
+"x": "Start Wave",
+"y": "Shop"
+}
 cover_image = ExtResource("2")
 executable_path = "Games/ProtocolTD/ProtocolTD.x86_64"
 steam_id = ""

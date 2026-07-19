@@ -12,6 +12,17 @@ description = "A retro-styled 3D action RPG inspired by the Soulsborne games. Lo
 date = "2026-07"
 dev_time = ""
 features = PackedStringArray("Soulslike", "Action RPG", "Retro 3D")
+controls = {
+"b": "Dodge",
+"dpad": "Switch Target",
+"l3": "Sprint",
+"left_stick": "Move",
+"lt": "Aim",
+"r3": "Lock On",
+"rb": "Attack",
+"right_stick": "Look",
+"start": "Pause"
+}
 cover_image = ExtResource("2")
 executable_path = "Games/DARKWEAVE/DARKWEAVE.x86_64"
 steam_id = ""

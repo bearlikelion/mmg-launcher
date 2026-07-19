@@ -11,7 +11,11 @@ enum Category { STEAM, PROTOTYPE, GAME_JAM, VIDEO, OPEN_SOURCE }
 @export_multiline var description: String = ""
 @export var date: String = ""
 @export var dev_time: String = ""
+@export var developer: String = ""
+@export var wishlist_url: String = ""
+@export var qr_code: Texture2D = null
 @export var features: PackedStringArray = PackedStringArray()
+@export var controls: Dictionary = {}
 @export var cover_image: Texture2D = null
 @export var media: Array[Resource] = []
 @export_global_file var executable_path: String = ""
@@ -21,6 +25,28 @@ enum Category { STEAM, PROTOTYPE, GAME_JAM, VIDEO, OPEN_SOURCE }
 # A game launches through Steam when it has an app id
 func is_steam() -> bool:
 	return not steam_id.is_empty()
+
+
+# Video entries are watched in the launcher instead of launched
+func is_video() -> bool:
+	return category == Category.VIDEO
+
+
+# The playable clips inside the media list
+func video_streams() -> Array[VideoStream]:
+	var streams: Array[VideoStream] = []
+	for item: Resource in media:
+		if item is VideoStream:
+			streams.append(item as VideoStream)
+	return streams
+
+
+# File name of the first clip, used for terminal-flavored labels
+func first_video_file() -> String:
+	var streams: Array[VideoStream] = video_streams()
+	if streams.is_empty():
+		return "%s.mp4" % title.to_lower().replace(" ", "-")
+	return streams[0].file.get_file()
 
 
 # Absolute filesystem path to the executable, resolving res:// bundles and paths
@@ -48,6 +74,8 @@ func resolved_executable_path() -> String:
 
 # Lowercase file-style name shown in the card editor tab
 func tab_name() -> String:
+	if is_video():
+		return first_video_file()
 	if is_steam():
 		return "%s.steam" % title.to_lower().replace(" ", "-")
 	if not executable_path.is_empty():
@@ -57,6 +85,8 @@ func tab_name() -> String:
 
 # Shell-flavored launch line shown in the detail view footer
 func launch_line() -> String:
+	if is_video():
+		return "mpv %s" % first_video_file()
 	if is_steam():
 		return "steam -applaunch %s" % steam_id
 	if not executable_path.is_empty():

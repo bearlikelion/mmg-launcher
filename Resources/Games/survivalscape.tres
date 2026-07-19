@@ -12,6 +12,15 @@ description = "A roguelike with random upgrades and a seeded weekly challenge. E
 date = "2024-07-22"
 dev_time = ""
 features = PackedStringArray("Roguelike", "Random Upgrades", "Weekly Challenge", "Multiplayer")
+controls = {
+"back": "HD Backgrounds",
+"dpad": "Move",
+"left_stick": "Move",
+"lt": "Zoom Out",
+"rt": "Zoom In",
+"start": "Pause",
+"x": "Character Stats"
+}
 cover_image = ExtResource("2")
 executable_path = ""
 steam_id = "2862660"

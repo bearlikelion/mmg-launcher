@@ -12,6 +12,13 @@ description = "Drop bugs to feed frogs, farm pond energy, and spend it on new fr
 date = "2026-06"
 dev_time = ""
 features = PackedStringArray("Incremental", "Roguelite", "Controller Friendly")
+controls = {
+"a": "Drop Bug",
+"b": "Back",
+"start": "Pause",
+"x": "Inspect / Sell",
+"y": "Restart"
+}
 cover_image = ExtResource("2")
 executable_path = "Games/Froginko/froginko.x86_64"
 steam_id = ""

@@ -32,6 +32,9 @@ func setup(game_data: GameInfo, index: int) -> void:
 	if game.is_steam():
 		%PlatformLabel.text = "steam"
 		%PlatformLabel.add_theme_color_override("font_color", Gruvbox.GREEN)
+	elif game.is_video():
+		%PlatformLabel.text = "video"
+		%PlatformLabel.add_theme_color_override("font_color", Gruvbox.PURPLE)
 	else:
 		%PlatformLabel.text = "local"
 		%PlatformLabel.add_theme_color_override("font_color", Gruvbox.BLUE)

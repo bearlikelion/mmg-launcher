@@ -1,11 +1,16 @@
-[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://deaapwescim66"]
+[gd_resource type="Resource" script_class="GameInfo" load_steps=5 format=3 uid="uid://deaapwescim66"]
 
 [ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dnb80m0qrqvw5" path="res://Assets/Covers/prophunt.png" id="2"]
+[ext_resource type="VideoStreamMP4" uid="uid://dxrwr4ik81qhf" path="res://Assets/Videos/Prophunt/prophunt_ragdolls.mp4" id="3"]
+[ext_resource type="VideoStreamMP4" uid="uid://deumq0pjpdwk1" path="res://Assets/Videos/Prophunt/prophunt_scatter.mp4" id="4"]
 
 [resource]
 script = ExtResource("1")
-enabled = false
+enabled = true
+category = 3
 title = "Prop Hunt"
 description = "Classic hide-and-seek with a twist: disguise yourself as an everyday object and blend in, or hunt down the props before time runs out."
 features = PackedStringArray("Multiplayer", "Hide & Seek")
-executable_path = "/home/mark/Desktop/My Games/prophunt/prophunt.x86_64"
+cover_image = ExtResource("2")
+media = Array[Resource]([ExtResource("3"), ExtResource("4")])

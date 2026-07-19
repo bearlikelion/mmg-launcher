@@ -10,5 +10,11 @@ title = "Cooties"
 description = "Physics-driven multiplayer mayhem. Dodge the outbreak, shove your friends, and whatever you do, don't catch the cooties."
 date = "2025-12-31"
 features = PackedStringArray("Multiplayer", "Physics", "Open Source")
+controls = {
+"a": "Jump",
+"dpad": "Move",
+"left_stick": "Move",
+"start": "Pause"
+}
 cover_image = ExtResource("2")
 executable_path = "/home/mark/Source/Godot/Projects/mmg-launcher/Build/Games/Cooties/Cooties.x86_64"

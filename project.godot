@@ -12,6 +12,8 @@ config_version=5
 
 config/name="MARK MAKES GAMES"
 run/main_scene="res://Scenes/main.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="mmg-launcher"
 config/features=PackedStringArray("4.7")
 boot_splash/bg_color=Color(0.113725, 0.12549, 0.129412, 1)
 boot_splash/image="uid://p7a33n78wlur"
@@ -27,12 +29,13 @@ MCPGameInspector="*res://addons/godot_mcp/mcp_game_inspector_service.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=800
+window/size/mode=3
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ExportFullscreen/plugin.cfg", "res://addons/godot_mcp/plugin.cfg")
+enabled=PackedStringArray("res://addons/ExportFullscreen/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg", "res://addons/godot_mcp/plugin.cfg")
 
 [file_customization]
 

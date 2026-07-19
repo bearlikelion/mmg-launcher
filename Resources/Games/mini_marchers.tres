@@ -1,12 +1,21 @@
-[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://corxm3brugps3"]
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3 uid="uid://corxm3brugps3"]
 
 [ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cdxxt182gfcn0" path="res://Assets/Covers/minimarchers.png" id="2"]
 
 [resource]
 script = ExtResource("1")
-enabled = false
-category = 2
+enabled = true
+category = 1
 title = "Mini Marchers"
 description = "Command tiny troops as they march into battle. Pint-sized soldiers, full-sized strategy."
 features = PackedStringArray("Strategy", "Auto Battler")
-executable_path = "/home/mark/Desktop/My Games/mini-marchers.x86_64"
+controls = {
+"lb": "Snap To Castle",
+"left_stick": "Pan Camera",
+"rb": "Follow Camera",
+"start": "Pause",
+"y": "Unit Menu"
+}
+cover_image = ExtResource("2")
+executable_path = "/home/mark/Source/Godot/Projects/mmg-launcher/Build/Games/mini-marchers/mini-marchers.x86_64"

@@ -1,12 +1,13 @@
 class_name Launcher
 extends Control
 
-enum State { ROW, DETAIL, PLAYING }
+enum State { ROW, DETAIL, PLAYING, SURVEY }
 
 const CARD_SCENE: PackedScene = preload("res://Scenes/game_card/game_card.tscn")
 const LIBRARY_PATH: String = "res://Resources/game_library.tres"
 const ROW_HINTS: String = "D-Pad / Stick: Browse      A / Enter: Details      Start / Esc: Quit"
 const DETAIL_HINTS: String = "A / Enter: Play      B / Esc: Back"
+const VIDEO_DETAIL_HINTS: String = "A / Enter: Watch      B / Esc: Back"
 const STEAM_RETURN_GRACE_MSEC: int = 3000
 const CATEGORY_ORDER: Array[GameInfo.Category] = [
 	GameInfo.Category.STEAM,
@@ -35,6 +36,7 @@ var _state: State = State.ROW
 var _selected_card: GameCard = null
 var _running_pid: int = -1
 var _steam_started_msec: int = 0
+var _session_started_msec: int = 0
 var _cards: Array[GameCard] = []
 
 
@@ -43,6 +45,7 @@ func _ready() -> void:
 	_setup_controller_bindings()
 	%DetailView.launch_requested.connect(_on_launch_requested)
 	%DetailView.closed.connect(_on_detail_closed)
+	%FeedbackSurvey.finished.connect(_on_survey_finished)
 	%ProcessTimer.timeout.connect(_on_process_timer_timeout)
 	_library = load(LIBRARY_PATH) as GameLibrary
 	if _library != null:
@@ -178,7 +181,7 @@ func _on_card_selected(card: GameCard) -> void:
 		return
 	_state = State.DETAIL
 	_selected_card = card
-	%HintBar.text = DETAIL_HINTS
+	%HintBar.text = VIDEO_DETAIL_HINTS if card.game.is_video() else DETAIL_HINTS
 	_hide_row()
 	%DetailView.open(card.game, card.accent)
 
@@ -211,21 +214,17 @@ func _launch_steam(game: GameInfo) -> void:
 	_state = State.PLAYING
 	_running_pid = -1
 	_steam_started_msec = Time.get_ticks_msec()
+	_session_started_msec = _steam_started_msec
 	%DetailView.set_running(true)
 	%PlayingOverlay.open(game, _selected_card.accent)
 	_show_status("Launching %s through Steam" % game.title)
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 
 
-# Return to the detail view once the player comes back from a Steam game
+# Return from a Steam game once the player comes back to the launcher
 func _end_steam_session() -> void:
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	%PlayingOverlay.close()
-	%DetailView.set_running(false)
-	_state = State.DETAIL
-	%DetailView.close()
-	if _selected_card != null:
-		_show_status("Finished playing %s" % _selected_card.game.title)
+	_end_game_session()
 
 
 # Start a local executable, watch its process, and minimize the launcher
@@ -242,6 +241,7 @@ func _launch_local(game: GameInfo) -> void:
 		return
 	_state = State.PLAYING
 	_running_pid = pid
+	_session_started_msec = Time.get_ticks_msec()
 	%DetailView.set_running(true)
 	%PlayingOverlay.open(game, _selected_card.accent)
 	%ProcessTimer.start()
@@ -257,8 +257,29 @@ func _on_process_timer_timeout() -> void:
 	_running_pid = -1
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	DisplayServer.window_move_to_foreground()
+	_end_game_session()
+
+
+# Close the playing overlay and ask for feedback before returning to the menu
+func _end_game_session() -> void:
 	%PlayingOverlay.close()
 	%DetailView.set_running(false)
+	var duration_seconds: int = maxi(0, int(float(Time.get_ticks_msec() - _session_started_msec) / 1000.0))
+	if _selected_card != null:
+		_state = State.SURVEY
+		%FeedbackSurvey.open(_selected_card.game, _selected_card.accent, duration_seconds)
+	else:
+		_finish_session()
+
+
+# Return to the detail view once the survey is answered or skipped
+func _on_survey_finished() -> void:
+	if _state == State.SURVEY:
+		_finish_session()
+
+
+# Shared tail of a play session: back to the detail view with a status line
+func _finish_session() -> void:
 	_state = State.DETAIL
 	%DetailView.close()
 	if _selected_card != null:
