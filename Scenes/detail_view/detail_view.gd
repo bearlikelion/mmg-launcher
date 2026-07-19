@@ -5,7 +5,7 @@ signal launch_requested
 signal closed
 
 const MAX_MEDIA_ITEMS: int = 3
-const THUMB_SIZE: Vector2 = Vector2(146, 82)
+const THUMB_SIZE: Vector2 = Vector2(176, 99)
 
 var _pulse_tween: Tween = null
 var _closing: bool = false

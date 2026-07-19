@@ -103,33 +103,44 @@ func _setup_controller_bindings() -> void:
 # Add one category header and its horizontal row of cards
 func _build_section(category: GameInfo.Category, category_games: Array[GameInfo]) -> void:
 	var accent: Color = CATEGORY_COLORS[category]
+	var section: VBoxContainer = VBoxContainer.new()
+	section.add_theme_constant_override("separation", 14)
+	%CategoryList.add_child(section)
 	var header: RichTextLabel = RichTextLabel.new()
 	header.bbcode_enabled = true
 	header.fit_content = true
 	header.scroll_active = false
 	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	header.add_theme_font_size_override("normal_font_size", 17)
+	header.add_theme_font_size_override("normal_font_size", 24)
+	header.add_theme_font_size_override("bold_font_size", 36)
 	header.text = "[color=#%s]##[/color] [b][color=#%s]%s[/color][/b] [color=#%s]:: %d[/color]" % [
 		Gruvbox.BG3.to_html(false), accent.to_html(false), CATEGORY_TITLES[category],
 		Gruvbox.BG3.to_html(false), category_games.size()
 	]
-	%CategoryList.add_child(header)
+	section.add_child(header)
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.follow_focus = true
 	scroll.clip_contents = false
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	%CategoryList.add_child(scroll)
+	scroll.scroll_hint_mode = ScrollContainer.SCROLL_HINT_MODE_ALL
+	section.add_child(scroll)
 	var row: HBoxContainer = HBoxContainer.new()
-	row.add_theme_constant_override("separation", 22)
+	row.add_theme_constant_override("separation", 28)
 	scroll.add_child(row)
 	for game: GameInfo in category_games:
 		var card: GameCard = CARD_SCENE.instantiate() as GameCard
 		row.add_child(card)
 		card.setup(game, _cards.size())
 		card.selected.connect(_on_card_selected)
+		card.focus_entered.connect(_on_card_focus_entered.bind(section))
 		card.play_entrance(0.05 + float(_cards.size()) * 0.05)
 		_cards.append(card)
+
+
+# Keep the focused card's whole section, including its header, inside the scroll view
+func _on_card_focus_entered(section: Control) -> void:
+	%CategoryScroll.ensure_control_visible(section)
 
 
 # Tree-style summary line under the header listing category counts
@@ -142,7 +153,7 @@ func _subheader_bbcode() -> String:
 		if count > 0:
 			var title: String = (CATEGORY_TITLES[category] as String).to_lower()
 			parts.append("[color=#%s]%d %s[/color]" % [CATEGORY_COLORS[category].to_html(false), count, title])
-	var summary: String = "[color=#%s]└─[/color] %d games installed" % [Gruvbox.GRAY.to_html(false), total]
+	var summary: String = "[color=#%s]└─[/color] %d projects" % [Gruvbox.GRAY.to_html(false), total]
 	if not parts.is_empty():
 		summary += separator + separator.join(parts)
 	return summary

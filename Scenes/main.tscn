@@ -6,6 +6,12 @@
 [ext_resource type="FontFile" uid="uid://bw8175shadmtf" path="res://Assets/Fonts/JetBrainsMono-ExtraBold.ttf" id="4"]
 [ext_resource type="PackedScene" path="res://Scenes/playing_overlay/playing_overlay.tscn" id="5"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kry3j"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+
 [node name="Main" type="Control" unique_id=1092478284]
 layout_mode = 3
 anchors_preset = 15
@@ -45,24 +51,27 @@ theme_override_constants/separation = 10
 [node name="PromptLine" type="RichTextLabel" parent="Margin/Layout" unique_id=590464225]
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/normal_font_size = 19
 bbcode_enabled = true
 text = "[color=#b8bb26]mark@launcher[/color] [color=#83a598]~/games[/color] [color=#928374]$[/color] tree ~/games"
 fit_content = true
 scroll_active = false
 
-[node name="Header" type="Label" parent="Margin/Layout" unique_id=388718375]
+[node name="Header" type="RichTextLabel" parent="Margin/Layout" unique_id=388718375]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.980392, 0.741176, 0.184314, 1)
-theme_override_fonts/font = ExtResource("4")
-theme_override_font_sizes/font_size = 52
-text = "MARK MAKES GAMES"
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("4")
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "[color=#fabd2f]MARKMAKES.GAMES[/color] [font_size=24][color=#928374]::[/color] [color=#83a598]@bearlikelion[/color] [color=#928374]::[/color] [color=#ebdbb2]Mark Arneman[/color][/font_size]"
+fit_content = true
+scroll_active = false
 
 [node name="SubHeader" type="RichTextLabel" parent="Margin/Layout" unique_id=58524435]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
@@ -71,9 +80,11 @@ scroll_active = false
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kry3j")
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
+scroll_hint_mode = 1
 
 [node name="CategoryList" type="VBoxContainer" parent="Margin/Layout/CategoryScroll" unique_id=382842443]
 unique_name_in_owner = true
@@ -83,15 +94,16 @@ theme_override_constants/separation = 14
 
 [node name="StatusLabel" type="Label" parent="Margin/Layout" unique_id=1104103194]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.980392, 0.741176, 0.184314, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 18
 
 [node name="HintBar" type="Label" parent="Margin/Layout" unique_id=996700460]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.572549, 0.513726, 0.454902, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 16
 text = "D-Pad / Stick: Browse      A / Enter: Details      Start / Esc: Quit"
 
 [node name="DetailView" parent="." unique_id=1177962052 instance=ExtResource("2")]

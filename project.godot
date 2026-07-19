@@ -32,7 +32,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")
+enabled=PackedStringArray("res://addons/ExportFullscreen/plugin.cfg", "res://addons/godot_mcp/plugin.cfg")
 
 [file_customization]
 

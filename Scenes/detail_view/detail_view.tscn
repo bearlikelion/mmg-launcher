@@ -140,7 +140,7 @@ grow_vertical = 2
 
 [node name="Window" type="PanelContainer" parent="Center"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(1060, 600)
+custom_minimum_size = Vector2(1180, 720)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_window")
 
@@ -179,7 +179,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.572549, 0.513726, 0.454902, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 17
 text = "~/games"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -220,7 +220,7 @@ size_flags_vertical = 0
 theme_override_constants/separation = 12
 
 [node name="CoverFrame" type="Control" parent="Center/Window/WindowVBox/Body/BodyVBox/ContentRow/MediaColumn"]
-custom_minimum_size = Vector2(460, 259)
+custom_minimum_size = Vector2(560, 315)
 layout_mode = 2
 mouse_filter = 2
 clip_contents = true
@@ -278,7 +278,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.980392, 0.741176, 0.184314, 1)
 theme_override_fonts/font = ExtResource("3")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 40
 text = "GAME TITLE"
 autowrap_mode = 2
 
@@ -286,7 +286,7 @@ autowrap_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.835294, 0.768627, 0.631373, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 20
 text = "Description"
 autowrap_mode = 2
 
@@ -295,7 +295,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 14
+theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
@@ -324,7 +324,7 @@ theme_override_colors/font_focus_color = Color(0.721569, 0.733333, 0.14902, 1)
 theme_override_colors/font_pressed_color = Color(0.721569, 0.733333, 0.14902, 1)
 theme_override_colors/font_disabled_color = Color(0.572549, 0.513726, 0.454902, 1)
 theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 22
 theme_override_styles/focus = SubResource("StyleBoxFlat_play_focus")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_play_disabled")
 theme_override_styles/hover = SubResource("StyleBoxFlat_play_hover")
