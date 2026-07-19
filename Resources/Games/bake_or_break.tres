@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/Covers/bakeorbreak.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 2
+title = "Bake or Break"
+description = "A horror biscuit-baking dice-rolling roguelike. Kidnapped by a witch, you bake to her exacting standards while managing your fear. Made for Brackeys Game Jam 2025.2."
+date = "2025-08"
+dev_time = ""
+features = PackedStringArray("Dice Roguelike", "Horror", "Game Jam")
+cover_image = ExtResource("2")
+executable_path = "Games/BakeOrBreak/bake-or-break.x86_64"
+steam_id = ""

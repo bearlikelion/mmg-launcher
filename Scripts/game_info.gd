@@ -23,11 +23,27 @@ func is_steam() -> bool:
 	return not steam_id.is_empty()
 
 
-# Absolute filesystem path to the executable, resolving res:// bundles
+# Absolute filesystem path to the executable, resolving res:// bundles and paths
+# relative to the launcher (Build/ in the editor, the binary's directory in exports).
+# Absolute paths that do not exist on this machine but contain a Games/ folder are
+# re-based onto the launcher directory, so editor-saved dev paths still work on device
 func resolved_executable_path() -> String:
 	if executable_path.begins_with("res://") or executable_path.begins_with("user://"):
 		return ProjectSettings.globalize_path(executable_path)
-	return executable_path
+	if executable_path.is_empty():
+		return executable_path
+	var relative_path: String = executable_path
+	if relative_path.is_absolute_path():
+		if FileAccess.file_exists(relative_path):
+			return relative_path
+		var games_index: int = relative_path.find("/Games/")
+		if games_index == -1:
+			return relative_path
+		relative_path = relative_path.substr(games_index + 1)
+	var base_dir: String = OS.get_executable_path().get_base_dir()
+	if OS.has_feature("editor"):
+		base_dir = ProjectSettings.globalize_path("res://Build")
+	return base_dir.path_join(relative_path)
 
 
 # Lowercase file-style name shown in the card editor tab

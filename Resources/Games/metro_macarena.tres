@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/Covers/metromacarena.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 2
+title = "Metro Macarena"
+description = "Board your train and get home as fast as you can. Avoid the other passengers if possible. A PSX-styled commute made with Smitner for Indie Game Clinic COLLAB JAM '26."
+date = "2026"
+dev_time = ""
+features = PackedStringArray("Game Jam", "PSX Style", "Collab")
+cover_image = ExtResource("2")
+executable_path = "Games/metro-macarena/metro-macarena.x86_64"
+steam_id = ""

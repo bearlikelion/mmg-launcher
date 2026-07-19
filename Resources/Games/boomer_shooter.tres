@@ -1,15 +1,14 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://c3ris03vep38a"]
 
-[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://ceg57qubpo4fa" path="res://Assets/Covers/boomershooter.png" id="2"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
 category = 4
 title = "Boomer Shooter"
 description = "A retro FPS built in the open. Fast movement, big guns, and all the source code to go with them."
-date = ""
-dev_time = ""
+date = "2026"
 features = PackedStringArray("Open Source", "FPS")
-executable_path = ""
-steam_id = ""
+cover_image = ExtResource("2")
+executable_path = "/home/mark/Source/Godot/Projects/mmg-launcher/Build/Games/boomershooter/boomershooter.x86_64"

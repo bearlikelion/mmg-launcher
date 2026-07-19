@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="GameLibrary" load_steps=13 format=3]
+[gd_resource type="Resource" script_class="GameLibrary" load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://Scripts/game_library.gd" id="1"]
 [ext_resource type="Script" path="res://Scripts/game_info.gd" id="2"]
@@ -13,7 +13,10 @@
 [ext_resource type="Resource" path="res://Resources/Games/mpdc.tres" id="11"]
 [ext_resource type="Resource" path="res://Resources/Games/darkweave.tres" id="12"]
 [ext_resource type="Resource" path="res://Resources/Games/boomer_shooter.tres" id="13"]
+[ext_resource type="Resource" path="res://Resources/Games/froginko.tres" id="14"]
+[ext_resource type="Resource" path="res://Resources/Games/metro_macarena.tres" id="15"]
+[ext_resource type="Resource" path="res://Resources/Games/bake_or_break.tres" id="16"]
 
 [resource]
 script = ExtResource("1")
-games = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("13"), ExtResource("6"), ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12")])
+games = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("13"), ExtResource("14"), ExtResource("8"), ExtResource("12"), ExtResource("7"), ExtResource("6"), ExtResource("9"), ExtResource("15"), ExtResource("16"), ExtResource("10"), ExtResource("11")])

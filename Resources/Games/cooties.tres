@@ -1,15 +1,14 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://mwnnc1635gix"]
 
-[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://pbxd5bdsln3j" path="res://Assets/Covers/cooties.png" id="2"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
 category = 4
 title = "Cooties"
 description = "Physics-driven multiplayer mayhem. Dodge the outbreak, shove your friends, and whatever you do, don't catch the cooties."
-date = "2026"
-dev_time = ""
+date = "2025-12-31"
 features = PackedStringArray("Multiplayer", "Physics", "Open Source")
-executable_path = "/home/mark/Desktop/My Games/cooties/Cooties.x86_64"
-steam_id = ""
+cover_image = ExtResource("2")
+executable_path = "/home/mark/Source/Godot/Projects/mmg-launcher/Build/Games/Cooties/Cooties.x86_64"

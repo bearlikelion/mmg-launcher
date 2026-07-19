@@ -1,15 +1,17 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/Covers/protocoltd.png" id="2"]
 
 [resource]
 script = ExtResource("1")
 enabled = true
 category = 1
 title = "Protocol TD"
-description = "Defend the network in this tower defense. Route power, place turrets, and hold the line against the incoming breach."
+description = "A randomized maze tower defense for 1 to 8 players. Every run rolls a fresh maze, so there are no memorized builds, only adaptation."
 date = ""
 dev_time = ""
-features = PackedStringArray("Tower Defense")
-executable_path = "res://Games/ProtocolTD/ProtocolTD.x86_64"
+features = PackedStringArray("Tower Defense", "Co-op 1-8", "Procedural")
+cover_image = ExtResource("2")
+executable_path = "Games/ProtocolTD/ProtocolTD.x86_64"
 steam_id = ""

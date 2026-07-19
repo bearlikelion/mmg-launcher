@@ -1,15 +1,17 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/Covers/darkweave.png" id="2"]
 
 [resource]
 script = ExtResource("1")
 enabled = true
 category = 1
 title = "DARKWEAVE"
-description = "A dark experiment fresh off the loom. Details to come."
-date = ""
+description = "A retro-styled 3D action RPG inspired by the Soulsborne games. Lock-on duels, stamina-paced melee, and dithered low-res dread."
+date = "2026-07"
 dev_time = ""
-features = PackedStringArray()
-executable_path = "res://Games/DARKWEAVE/DARKWEAVE.x86_64"
+features = PackedStringArray("Soulslike", "Action RPG", "Retro 3D")
+cover_image = ExtResource("2")
+executable_path = "Games/DARKWEAVE/DARKWEAVE.x86_64"
 steam_id = ""

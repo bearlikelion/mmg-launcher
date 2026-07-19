@@ -1,15 +1,17 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/Covers/survivalidle.png" id="2"]
 
 [resource]
 script = ExtResource("1")
 enabled = true
-category = 2
+category = 1
 title = "Survival Idle"
-description = "Gather, build, and automate. An idle survival game that keeps on working even when you aren't."
+description = "Survive or die. A tiny roguelike autoshooter that fights for itself, fullscreen or perched on your desktop while you work."
 date = ""
 dev_time = ""
-features = PackedStringArray("Idle", "Automation")
-executable_path = "res://Games/SurvivalIdle/SurvivalIdle.x86_64"
+features = PackedStringArray("Autobattler", "Roguelike", "Desktop Pet")
+cover_image = ExtResource("2")
+executable_path = "Games/SurvivalIdle/SurvivalIdle.x86_64"
 steam_id = ""

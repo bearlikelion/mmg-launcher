@@ -1,15 +1,12 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="GameInfo" format=3 uid="uid://corxm3brugps3"]
 
-[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Script" uid="uid://ckg2lcu2wpa6g" path="res://Scripts/game_info.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
+enabled = false
 category = 2
 title = "Mini Marchers"
 description = "Command tiny troops as they march into battle. Pint-sized soldiers, full-sized strategy."
-date = ""
-dev_time = ""
 features = PackedStringArray("Strategy", "Auto Battler")
 executable_path = "/home/mark/Desktop/My Games/mini-marchers.x86_64"
-steam_id = ""

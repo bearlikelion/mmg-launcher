@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/Covers/froginko.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 1
+title = "Froginko"
+description = "Drop bugs to feed frogs, farm pond energy, and spend it on new frogs, mushroom mutations, and relics. An incremental frog economy that spirals out of control."
+date = "2026-06"
+dev_time = ""
+features = PackedStringArray("Incremental", "Roguelite", "Controller Friendly")
+cover_image = ExtResource("2")
+executable_path = "Games/Froginko/froginko.x86_64"
+steam_id = ""
