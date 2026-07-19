@@ -49,11 +49,35 @@ func first_video_file() -> String:
 	return streams[0].file.get_file()
 
 
-# Absolute filesystem path to the executable, resolving res:// bundles and paths
-# relative to the launcher (Build/ in the editor, the binary's directory in exports).
-# Absolute paths that do not exist on this machine but contain a Games/ folder are
-# re-based onto the launcher directory, so editor-saved dev paths still work on device
+# Translate a Linux-style executable name into the current platform's variant,
+# so game entries authored with .x86_64 paths launch .exe builds on Windows
+static func platform_executable(path: String) -> String:
+	if OS.has_feature("windows") and path.ends_with(".x86_64"):
+		return path.trim_suffix(".x86_64") + ".exe"
+	return path
+
+
+# Whether this entry can do anything on this machine: videos and Steam games
+# always work, local games need their executable to exist for this platform
+func is_available() -> bool:
+	if is_video() or is_steam():
+		return true
+	if executable_path.is_empty():
+		return false
+	return FileAccess.file_exists(resolved_executable_path())
+
+
+# Absolute filesystem path to the platform's executable, resolving res:// bundles
+# and paths relative to the launcher (Build/ in the editor, the binary's directory
+# in exports). Absolute paths that do not exist on this machine but contain a
+# Games/ folder are re-based onto the launcher directory, so editor-saved dev
+# paths still work on device
 func resolved_executable_path() -> String:
+	return platform_executable(_resolved_linux_path())
+
+
+# The resolved path as authored, before platform extension translation
+func _resolved_linux_path() -> String:
 	if executable_path.begins_with("res://") or executable_path.begins_with("user://"):
 		return ProjectSettings.globalize_path(executable_path)
 	if executable_path.is_empty():
@@ -79,8 +103,8 @@ func tab_name() -> String:
 	if is_steam():
 		return "%s.steam" % title.to_lower().replace(" ", "-")
 	if not executable_path.is_empty():
-		return executable_path.get_file()
-	return "%s.x86_64" % title.to_lower().replace(" ", "-")
+		return platform_executable(executable_path.get_file())
+	return platform_executable("%s.x86_64" % title.to_lower().replace(" ", "-"))
 
 
 # Shell-flavored launch line shown in the detail view footer
@@ -90,5 +114,5 @@ func launch_line() -> String:
 	if is_steam():
 		return "steam -applaunch %s" % steam_id
 	if not executable_path.is_empty():
-		return "./%s" % executable_path.get_file()
+		return "./%s" % platform_executable(executable_path.get_file())
 	return "./%s" % tab_name()

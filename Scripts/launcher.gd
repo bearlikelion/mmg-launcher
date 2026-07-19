@@ -17,7 +17,7 @@ const CATEGORY_ORDER: Array[GameInfo.Category] = [
 	GameInfo.Category.VIDEO,
 ]
 const CATEGORY_TITLES: Dictionary = {
-	GameInfo.Category.STEAM: "STEAM",
+	GameInfo.Category.STEAM: "STEAM GAMES",
 	GameInfo.Category.OPEN_SOURCE: "OPEN SOURCE",
 	GameInfo.Category.PROTOTYPE: "PROTOTYPES",
 	GameInfo.Category.GAME_JAM: "GAME JAMS",
@@ -50,7 +50,10 @@ func _ready() -> void:
 	_library = load(LIBRARY_PATH) as GameLibrary
 	if _library != null:
 		for category: GameInfo.Category in CATEGORY_ORDER:
-			var category_games: Array[GameInfo] = _library.games_in_category(category)
+			var category_games: Array[GameInfo] = []
+			for game: GameInfo in _library.games_in_category(category):
+				if game.is_available():
+					category_games.append(game)
 			if not category_games.is_empty():
 				_build_section(category, category_games)
 	%SubHeader.text = _subheader_bbcode()
@@ -161,7 +164,7 @@ func _scroll_section_into_view(section: Control) -> void:
 
 # Tree-style summary line under the header listing category counts
 func _subheader_bbcode() -> String:
-	var total: int = 0 if _library == null else _library.enabled_games().size()
+	# var total: int = 0 if _library == null else _library.enabled_games().size()
 	var separator: String = " [color=#%s]::[/color] " % Gruvbox.BG3.to_html(false)
 	var parts: Array[String] = []
 	for category: GameInfo.Category in CATEGORY_ORDER:
@@ -169,7 +172,8 @@ func _subheader_bbcode() -> String:
 		if count > 0:
 			var title: String = (CATEGORY_TITLES[category] as String).to_lower()
 			parts.append("[color=#%s]%d %s[/color]" % [CATEGORY_COLORS[category].to_html(false), count, title])
-	var summary: String = "[color=#%s]└─[/color] %d projects" % [Gruvbox.GRAY.to_html(false), total]
+	# var summary: String = "[color=#%s]└─[/color] %d projects" % [Gruvbox.GRAY.to_html(false), total]
+	var summary: String = "[color=#%s]└─[/color] " % [Gruvbox.GRAY.to_html(false)]
 	if not parts.is_empty():
 		summary += separator + separator.join(parts)
 	return summary
@@ -265,11 +269,16 @@ func _end_game_session() -> void:
 	%PlayingOverlay.close()
 	%DetailView.set_running(false)
 	var duration_seconds: int = maxi(0, int(float(Time.get_ticks_msec() - _session_started_msec) / 1000.0))
-	if _selected_card != null:
+	if _selected_card != null and _feedback_enabled():
 		_state = State.SURVEY
 		%FeedbackSurvey.open(_selected_card.game, _selected_card.accent, duration_seconds)
 	else:
 		_finish_session()
+
+
+# Feedback surveys only run on kiosk builds and in the editor
+func _feedback_enabled() -> bool:
+	return OS.has_feature("kiosk") or OS.has_feature("editor")
 
 
 # Return to the detail view once the survey is answered or skipped
