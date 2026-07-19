@@ -1,0 +1,262 @@
+class_name Launcher
+extends Control
+
+enum State { ROW, DETAIL, PLAYING }
+
+const CARD_SCENE: PackedScene = preload("res://Scenes/game_card/game_card.tscn")
+const LIBRARY_PATH: String = "res://Resources/game_library.tres"
+const ROW_HINTS: String = "D-Pad / Stick: Browse      A / Enter: Details      Start / Esc: Quit"
+const DETAIL_HINTS: String = "A / Enter: Play      B / Esc: Back"
+const STEAM_RETURN_GRACE_MSEC: int = 3000
+const CATEGORY_ORDER: Array[GameInfo.Category] = [
+	GameInfo.Category.STEAM,
+	GameInfo.Category.OPEN_SOURCE,
+	GameInfo.Category.PROTOTYPE,
+	GameInfo.Category.GAME_JAM,
+	GameInfo.Category.VIDEO,
+]
+const CATEGORY_TITLES: Dictionary = {
+	GameInfo.Category.STEAM: "STEAM",
+	GameInfo.Category.OPEN_SOURCE: "OPEN SOURCE",
+	GameInfo.Category.PROTOTYPE: "PROTOTYPES",
+	GameInfo.Category.GAME_JAM: "GAME JAMS",
+	GameInfo.Category.VIDEO: "VIDEOS",
+}
+const CATEGORY_COLORS: Dictionary = {
+	GameInfo.Category.STEAM: Gruvbox.GREEN,
+	GameInfo.Category.OPEN_SOURCE: Gruvbox.YELLOW,
+	GameInfo.Category.PROTOTYPE: Gruvbox.AQUA,
+	GameInfo.Category.GAME_JAM: Gruvbox.ORANGE,
+	GameInfo.Category.VIDEO: Gruvbox.PURPLE,
+}
+
+var _library: GameLibrary = null
+var _state: State = State.ROW
+var _selected_card: GameCard = null
+var _running_pid: int = -1
+var _steam_started_msec: int = 0
+var _cards: Array[GameCard] = []
+
+
+# Build the row of cards, bind controller buttons, and play the entrance animation
+func _ready() -> void:
+	_setup_controller_bindings()
+	%DetailView.launch_requested.connect(_on_launch_requested)
+	%DetailView.closed.connect(_on_detail_closed)
+	%ProcessTimer.timeout.connect(_on_process_timer_timeout)
+	_library = load(LIBRARY_PATH) as GameLibrary
+	if _library != null:
+		for category: GameInfo.Category in CATEGORY_ORDER:
+			var category_games: Array[GameInfo] = _library.games_in_category(category)
+			if not category_games.is_empty():
+				_build_section(category, category_games)
+	%SubHeader.text = _subheader_bbcode()
+	%HintBar.text = ROW_HINTS
+	if _cards.size() > 0:
+		await get_tree().create_timer(0.6).timeout
+		_cards[0].grab_focus()
+	else:
+		_show_status("No games enabled in the library")
+
+
+# Handle back navigation and quitting depending on the current state
+func _unhandled_input(event: InputEvent) -> void:
+	if _state == State.DETAIL:
+		if event.is_action_pressed("ui_cancel"):
+			get_viewport().set_input_as_handled()
+			%DetailView.close()
+	elif _state == State.ROW:
+		if event is InputEventKey:
+			var key_event: InputEventKey = event as InputEventKey
+			if key_event.pressed and key_event.keycode == KEY_ESCAPE:
+				get_tree().quit()
+		elif event is InputEventJoypadButton:
+			var joy_event: InputEventJoypadButton = event as InputEventJoypadButton
+			if joy_event.pressed and joy_event.button_index == JOY_BUTTON_START:
+				get_tree().quit()
+
+
+# Restore fullscreen on refocus, and treat a refocus during a Steam session as the game ending
+func _notification(what: int) -> void:
+	if what != NOTIFICATION_APPLICATION_FOCUS_IN:
+		return
+	if _state == State.PLAYING:
+		var steam_session: bool = _running_pid <= 0
+		if steam_session and Time.get_ticks_msec() - _steam_started_msec > STEAM_RETURN_GRACE_MSEC:
+			_end_steam_session()
+	elif DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_MINIMIZED:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+
+
+# Bind the controller A and B buttons to the built-in UI actions
+func _setup_controller_bindings() -> void:
+	var accept_button: InputEventJoypadButton = InputEventJoypadButton.new()
+	accept_button.button_index = JOY_BUTTON_A
+	if not InputMap.action_has_event("ui_accept", accept_button):
+		InputMap.action_add_event("ui_accept", accept_button)
+	var cancel_button: InputEventJoypadButton = InputEventJoypadButton.new()
+	cancel_button.button_index = JOY_BUTTON_B
+	if not InputMap.action_has_event("ui_cancel", cancel_button):
+		InputMap.action_add_event("ui_cancel", cancel_button)
+
+
+# Add one category header and its horizontal row of cards
+func _build_section(category: GameInfo.Category, category_games: Array[GameInfo]) -> void:
+	var accent: Color = CATEGORY_COLORS[category]
+	var header: RichTextLabel = RichTextLabel.new()
+	header.bbcode_enabled = true
+	header.fit_content = true
+	header.scroll_active = false
+	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	header.add_theme_font_size_override("normal_font_size", 17)
+	header.text = "[color=#%s]##[/color] [b][color=#%s]%s[/color][/b] [color=#%s]:: %d[/color]" % [
+		Gruvbox.BG3.to_html(false), accent.to_html(false), CATEGORY_TITLES[category],
+		Gruvbox.BG3.to_html(false), category_games.size()
+	]
+	%CategoryList.add_child(header)
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.follow_focus = true
+	scroll.clip_contents = false
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	%CategoryList.add_child(scroll)
+	var row: HBoxContainer = HBoxContainer.new()
+	row.add_theme_constant_override("separation", 22)
+	scroll.add_child(row)
+	for game: GameInfo in category_games:
+		var card: GameCard = CARD_SCENE.instantiate() as GameCard
+		row.add_child(card)
+		card.setup(game, _cards.size())
+		card.selected.connect(_on_card_selected)
+		card.play_entrance(0.05 + float(_cards.size()) * 0.05)
+		_cards.append(card)
+
+
+# Tree-style summary line under the header listing category counts
+func _subheader_bbcode() -> String:
+	var total: int = 0 if _library == null else _library.enabled_games().size()
+	var separator: String = " [color=#%s]::[/color] " % Gruvbox.BG3.to_html(false)
+	var parts: Array[String] = []
+	for category: GameInfo.Category in CATEGORY_ORDER:
+		var count: int = 0 if _library == null else _library.games_in_category(category).size()
+		if count > 0:
+			var title: String = (CATEGORY_TITLES[category] as String).to_lower()
+			parts.append("[color=#%s]%d %s[/color]" % [CATEGORY_COLORS[category].to_html(false), count, title])
+	var summary: String = "[color=#%s]└─[/color] %d games installed" % [Gruvbox.GRAY.to_html(false), total]
+	if not parts.is_empty():
+		summary += separator + separator.join(parts)
+	return summary
+
+
+# Open the detail view for the chosen game
+func _on_card_selected(card: GameCard) -> void:
+	if _state != State.ROW:
+		return
+	_state = State.DETAIL
+	_selected_card = card
+	%HintBar.text = DETAIL_HINTS
+	_hide_row()
+	%DetailView.open(card.game, card.accent)
+
+
+# Return to the row once the detail view has finished closing
+func _on_detail_closed() -> void:
+	_state = State.ROW
+	%HintBar.text = ROW_HINTS
+	_show_row(_selected_card)
+
+
+# Route the launch to Steam or a local executable
+func _on_launch_requested() -> void:
+	if _state != State.DETAIL or _selected_card == null:
+		return
+	var game: GameInfo = _selected_card.game
+	if game.is_steam():
+		_launch_steam(game)
+	else:
+		_launch_local(game)
+
+
+# Hand the game over to Steam and block the launcher until the player comes back
+func _launch_steam(game: GameInfo) -> void:
+	var err: Error = OS.shell_open("steam://rungameid/%s" % game.steam_id)
+	if err != OK:
+		_show_status("Could not reach Steam for %s" % game.title)
+		%DetailView.play_error_feedback()
+		return
+	_state = State.PLAYING
+	_running_pid = -1
+	_steam_started_msec = Time.get_ticks_msec()
+	%DetailView.set_running(true)
+	%PlayingOverlay.open(game, _selected_card.accent)
+	_show_status("Launching %s through Steam" % game.title)
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
+
+
+# Return to the detail view once the player comes back from a Steam game
+func _end_steam_session() -> void:
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	%PlayingOverlay.close()
+	%DetailView.set_running(false)
+	_state = State.DETAIL
+	%DetailView.close()
+	if _selected_card != null:
+		_show_status("Finished playing %s" % _selected_card.game.title)
+
+
+# Start a local executable, watch its process, and minimize the launcher
+func _launch_local(game: GameInfo) -> void:
+	var path: String = game.resolved_executable_path()
+	if not FileAccess.file_exists(path):
+		_show_status("Executable not found: %s" % path)
+		%DetailView.play_error_feedback()
+		return
+	var pid: int = OS.create_process(path, [])
+	if pid <= 0:
+		_show_status("Failed to launch %s" % game.title)
+		%DetailView.play_error_feedback()
+		return
+	_state = State.PLAYING
+	_running_pid = pid
+	%DetailView.set_running(true)
+	%PlayingOverlay.open(game, _selected_card.accent)
+	%ProcessTimer.start()
+	_show_status("Now playing %s" % game.title)
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
+
+
+# Poll the running game and return to the menu once it exits
+func _on_process_timer_timeout() -> void:
+	if _running_pid > 0 and OS.is_process_running(_running_pid):
+		return
+	%ProcessTimer.stop()
+	_running_pid = -1
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	DisplayServer.window_move_to_foreground()
+	%PlayingOverlay.close()
+	%DetailView.set_running(false)
+	_state = State.DETAIL
+	%DetailView.close()
+	if _selected_card != null:
+		_show_status("Finished playing %s" % _selected_card.game.title)
+
+
+# Fade the category rows out while the detail view is open
+func _hide_row() -> void:
+	var tween: Tween = create_tween()
+	tween.tween_property(%CategoryScroll, "modulate:a", 0.0, 0.12)
+	tween.tween_callback(func() -> void: %CategoryScroll.visible = false)
+
+
+# Bring the category rows back and restore focus to the last played game
+func _show_row(focus_card: GameCard) -> void:
+	%CategoryScroll.visible = true
+	UIAnimator.slide_in(%CategoryScroll, Vector2(0.0, 20.0), 0.22)
+	if focus_card != null:
+		focus_card.grab_focus.call_deferred()
+
+
+# Show a short status message under the row
+func _show_status
+(message: String) -> void:
+	%StatusLabel.text = message

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/Covers/survivalscape.jpg" id="2"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 0
+title = "SurvivalScape"
+description = "A roguelike with random upgrades and a seeded weekly challenge. Every run is different: stack upgrades, survive the waves, and climb the weekly leaderboard."
+date = "2024-07-22"
+dev_time = ""
+features = PackedStringArray("Roguelike", "Random Upgrades", "Weekly Challenge", "Multiplayer")
+cover_image = ExtResource("2")
+executable_path = ""
+steam_id = "2862660"

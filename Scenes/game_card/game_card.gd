@@ -3,22 +3,10 @@ extends Button
 
 signal selected(card: GameCard)
 
-const ACCENT_COLORS: Array[Color] = [
-	Color("e05d5d"),
-	Color("e0a15d"),
-	Color("d8c95a"),
-	Color("7fc96b"),
-	Color("5dc9c0"),
-	Color("5d8fe0"),
-	Color("9b6be0"),
-	Color("e06bb8"),
-]
-const FOCUS_SCALE: Vector2 = Vector2(1.07, 1.07)
+const FOCUS_SCALE: Vector2 = Vector2(1.04, 1.04)
 
-var game_title: String = ""
-var blurb: String = ""
-var exec_path: String = ""
-var accent: Color = Color.WHITE
+var game: GameInfo = null
+var accent: Color = Gruvbox.AQUA
 
 var _entrance_tween: Tween = null
 var _focus_tween: Tween = null
@@ -31,18 +19,34 @@ func _ready() -> void:
 	pressed.connect(_on_pressed)
 
 
-# Fill the card with a single game entry loaded from games.json
-func setup(data: Dictionary, index: int) -> void:
-	game_title = data.get("title", "Unknown")
-	blurb = data.get("blurb", "")
-	exec_path = data.get("path", "")
-	accent = ACCENT_COLORS[index % ACCENT_COLORS.size()]
-	%TitleLabel.text = game_title
-	%InitialLabel.text = game_title.substr(0, 1).to_upper()
-	%ArtBlock.color = accent
+# Fill the card from a GameInfo resource in the library
+func setup(game_data: GameInfo, index: int) -> void:
+	game = game_data
+	accent = Gruvbox.accent_for_index(index)
+	%TabLabel.text = game.tab_name()
+	%TitleLabel.text = game.title
+	%DescLabel.text = game.description
+	%DateLabel.text = game.date
+	%InitialLabel.text = game.title.substr(0, 1).to_upper()
+	%InitialLabel.add_theme_color_override("font_color", accent)
+	if game.is_steam():
+		%PlatformLabel.text = "steam"
+		%PlatformLabel.add_theme_color_override("font_color", Gruvbox.GREEN)
+	else:
+		%PlatformLabel.text = "local"
+		%PlatformLabel.add_theme_color_override("font_color", Gruvbox.BLUE)
+	if game.cover_image != null:
+		%CoverImage.texture = game.cover_image
+		CoverFit.apply(%CoverImage)
+		%CoverImage.visible = true
+		%InitialLabel.visible = false
+	var tab_style: StyleBoxFlat = %TabName.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+	if tab_style != null:
+		tab_style.border_color = accent
+		%TabName.add_theme_stylebox_override("panel", tab_style)
 
 
-# Pop the card in as part of the staggered grid entrance
+# Pop the card in as part of the staggered row entrance
 func play_entrance(delay: float) -> void:
 	_entrance_tween = UIAnimator.pop_in(self, 0.4, delay)
 

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 4
+title = "Boomer Shooter"
+description = "A retro FPS built in the open. Fast movement, big guns, and all the source code to go with them."
+date = ""
+dev_time = ""
+features = PackedStringArray("Open Source", "FPS")
+executable_path = ""
+steam_id = ""

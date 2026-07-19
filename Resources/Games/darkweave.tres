@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 1
+title = "DARKWEAVE"
+description = "A dark experiment fresh off the loom. Details to come."
+date = ""
+dev_time = ""
+features = PackedStringArray()
+executable_path = "res://Games/DARKWEAVE/DARKWEAVE.x86_64"
+steam_id = ""

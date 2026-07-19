@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 1
+title = "Farwild"
+description = "Venture deep into a vast, untamed wilderness. Explore sprawling terrain, live off the land, and see how far into the wild you can go."
+date = ""
+dev_time = ""
+features = PackedStringArray("Exploration", "Survival")
+executable_path = "/home/mark/Desktop/My Games/farwild/farwild.x86_64"
+steam_id = ""

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/game_info.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+category = 1
+title = "Prop Hunt"
+description = "Classic hide-and-seek with a twist: disguise yourself as an everyday object and blend in, or hunt down the props before time runs out."
+date = ""
+dev_time = ""
+features = PackedStringArray("Multiplayer", "Hide & Seek")
+executable_path = "/home/mark/Desktop/My Games/prophunt/prophunt.x86_64"
+steam_id = ""
