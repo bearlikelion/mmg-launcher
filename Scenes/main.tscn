@@ -8,9 +8,9 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kry3j"]
 content_margin_left = 24.0
-content_margin_top = 24.0
+content_margin_top = 12.0
 content_margin_right = 24.0
-content_margin_bottom = 24.0
+content_margin_bottom = 12.0
 
 [node name="Main" type="Control" unique_id=1092478284]
 layout_mode = 3

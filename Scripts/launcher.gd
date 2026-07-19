@@ -138,9 +138,22 @@ func _build_section(category: GameInfo.Category, category_games: Array[GameInfo]
 		_cards.append(card)
 
 
-# Keep the focused card's whole section, including its header, inside the scroll view
+# Defer the section scroll so it runs after the scroll container's own focus handling
 func _on_card_focus_entered(section: Control) -> void:
-	%CategoryScroll.ensure_control_visible(section)
+	_scroll_section_into_view.call_deferred(section)
+
+
+# Keep the focused card's whole section, including its header, inside the scroll view
+func _scroll_section_into_view(section: Control) -> void:
+	var scroll: ScrollContainer = %CategoryScroll
+	var panel: StyleBox = scroll.get_theme_stylebox("panel")
+	var view_height: float = scroll.size.y - panel.get_margin(SIDE_TOP) - panel.get_margin(SIDE_BOTTOM)
+	var section_top: float = section.position.y
+	var section_bottom: float = section_top + section.size.y
+	if section.size.y <= view_height:
+		scroll.scroll_vertical = int(clampf(float(scroll.scroll_vertical), section_bottom - view_height, section_top))
+	else:
+		scroll.scroll_vertical = int(section_bottom - view_height)
 
 
 # Tree-style summary line under the header listing category counts
