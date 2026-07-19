@@ -23,7 +23,7 @@ Unzip, run, and browse with a controller or keyboard. Games launch from the `Gam
 
 ## Tech
 
-Built with [Godot 4.7](https://godotengine.org) using a custom engine build that adds an mp4 `VideoStream` module (FFmpeg on Linux, Media Foundation on Windows). Feedback storage uses [godot-sqlite](https://github.com/2shady4u/godot-sqlite). Games are plain Godot `Resource` files (`Resources/Games/*.tres`) referenced by a single library resource, so adding a game is a couple of clicks in the Inspector.
+Built with [Godot 4.7](https://godotengine.org) using a custom engine build that adds an mp4 `VideoStream` module with a statically linked, decode-only FFmpeg, so trailers play on any Linux distro (Steam Deck included) and Windows with zero system dependencies. Feedback storage uses [godot-sqlite](https://github.com/2shady4u/godot-sqlite). Games are plain Godot `Resource` files (`Resources/Games/*.tres`) referenced by a single library resource, so adding a game is a couple of clicks in the Inspector.
 
 ## Watch it get built
 
