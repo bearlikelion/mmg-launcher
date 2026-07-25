@@ -28,7 +28,6 @@ var _first_osk_key: Button = null
 var _saving: bool = false
 
 
-# Build the on-screen keyboard and wire the footer buttons once
 func _ready() -> void:
 	_build_keyboard()
 	%SkipButton.pressed.connect(_finish)
@@ -37,7 +36,6 @@ func _ready() -> void:
 	%BackButton.pressed.connect(_finish)
 
 
-# Ask whether the player wants to leave feedback after a finished play session
 func open(game: GameInfo, accent: Color, duration_seconds: int) -> void:
 	_game = game
 	_accent = accent
@@ -59,13 +57,13 @@ func open(game: GameInfo, accent: Color, duration_seconds: int) -> void:
 	dim_tween.tween_property(%Dim, "modulate:a", 1.0, 0.2)
 	UIAnimator.pop_in(%PromptWindow, 0.3)
 	await get_tree().create_timer(0.25).timeout
+	# Wait out the press that opened the prompt so it cannot pick a button
 	while Input.is_action_pressed("ui_accept"):
 		await get_tree().process_frame
 	if visible and %PromptLayer.visible:
 		%FeedbackButton.grab_focus()
 
 
-# Swap the exit prompt for the full survey form
 func _show_form() -> void:
 	%PromptLayer.visible = false
 	%Center.visible = true
@@ -80,7 +78,6 @@ func _show_form() -> void:
 		(_text_buttons["player_name"] as Button).grab_focus()
 
 
-# Minutes and seconds spent in the game, for the exit prompt line
 func _format_duration(seconds: int) -> String:
 	var minutes: int = int(float(seconds) / 60.0)
 	var remainder: int = seconds % 60
@@ -89,7 +86,7 @@ func _format_duration(seconds: int) -> String:
 	return "%ds" % remainder
 
 
-# B backs out one layer: keyboard, then form or prompt back to the launcher
+# B backs out one layer at a time: keyboard, then form, then the launcher
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
@@ -101,7 +98,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_finish()
 
 
-# Let a physical keyboard type straight into the entry overlay
+# Consumes every key so Enter/Space cannot also activate the focused OSK button
 func _input(event: InputEvent) -> void:
 	if not visible or not %EntryLayer.visible:
 		return
@@ -117,7 +114,6 @@ func _input(event: InputEvent) -> void:
 		_entry_append(char(key_event.unicode))
 
 
-# Rebuild the question rows for the current game
 func _build_form() -> void:
 	_choice_buttons.clear()
 	_text_buttons.clear()
@@ -134,7 +130,6 @@ func _build_form() -> void:
 	_add_text_row("comments", "comments", "press A to type", true)
 
 
-# One tree-style label shared by all question rows
 func _add_row_label(row: HBoxContainer, key_label: String, last: bool) -> void:
 	var label: RichTextLabel = RichTextLabel.new()
 	label.bbcode_enabled = true
@@ -151,7 +146,6 @@ func _add_row_label(row: HBoxContainer, key_label: String, last: bool) -> void:
 	row.add_child(label)
 
 
-# Add a single-choice question answered with toggle buttons
 func _add_choice_row(key: String, key_label: String, options: Array) -> void:
 	var row: HBoxContainer = HBoxContainer.new()
 	row.add_theme_constant_override("separation", 8)
@@ -169,7 +163,6 @@ func _add_choice_row(key: String, key_label: String, options: Array) -> void:
 	_choice_buttons[key] = buttons
 
 
-# Add a free-text question answered through the entry overlay
 func _add_text_row(key: String, key_label: String, placeholder: String, last: bool = false) -> void:
 	var row: HBoxContainer = HBoxContainer.new()
 	row.add_theme_constant_override("separation", 8)
@@ -200,7 +193,6 @@ func _on_choice_toggled(pressed_state: bool, key: String, value: String, button:
 		_answers.erase(key)
 
 
-# Open the text entry overlay for a name or comments field
 func _open_entry(key: String) -> void:
 	_entry_key = key
 	_entry_text = String(_answers.get(key, ""))
@@ -211,7 +203,6 @@ func _open_entry(key: String) -> void:
 		_first_osk_key.grab_focus()
 
 
-# Store the typed text and return focus to the form
 func _close_entry() -> void:
 	var trimmed: String = _entry_text.strip_edges()
 	if trimmed.is_empty():
@@ -231,7 +222,6 @@ func _close_entry() -> void:
 		button.grab_focus()
 
 
-# Append one character to the entry, respecting the field's length limit
 func _entry_append(character: String) -> void:
 	var limit: int = NAME_LIMIT if _entry_key == "player_name" else COMMENT_LIMIT
 	if _entry_text.length() >= limit:
@@ -242,7 +232,6 @@ func _entry_append(character: String) -> void:
 	_refresh_entry_display()
 
 
-# Remove the last character of the entry
 func _entry_backspace() -> void:
 	if _entry_text.is_empty():
 		return
@@ -250,12 +239,10 @@ func _entry_backspace() -> void:
 	_refresh_entry_display()
 
 
-# Show the typed text with a terminal caret
 func _refresh_entry_display() -> void:
 	%EntryDisplay.text = _entry_text + "▌"
 
 
-# Build the controller-navigable keyboard grid
 func _build_keyboard() -> void:
 	_letter_keys.clear()
 	for key_row: Array in KEY_ROWS:
@@ -291,7 +278,6 @@ func _build_keyboard() -> void:
 	bottom_row.add_child(done_button)
 
 
-# One styled keyboard key
 func _make_key(label: String, minimum_size: Vector2) -> Button:
 	var key_button: Button = Button.new()
 	key_button.text = label
@@ -304,19 +290,16 @@ func _make_key(label: String, minimum_size: Vector2) -> Button:
 	return key_button
 
 
-# Type the pressed key, honoring the shift toggle for letters
 func _on_key_pressed(key_button: Button) -> void:
 	_entry_append(key_button.text)
 
 
-# Toggle the keyboard between lowercase and uppercase letters
 func _set_shift(enabled: bool) -> void:
 	_shift_on = enabled
 	for key_button: Button in _letter_keys:
 		key_button.text = key_button.text.to_upper() if enabled else key_button.text.to_lower()
 
 
-# Persist the response and close with a short confirmation
 func _on_save_pressed() -> void:
 	if _saving:
 		return
@@ -354,7 +337,6 @@ func _on_save_pressed() -> void:
 	_finish()
 
 
-# Hide the survey and hand control back to the launcher
 func _finish() -> void:
 	if not visible:
 		return
@@ -362,7 +344,6 @@ func _finish() -> void:
 	finished.emit()
 
 
-# Accent-aware styles for answer buttons
 func _style_choice_button(button: Button) -> void:
 	button.add_theme_stylebox_override("normal", _flat_stylebox(Gruvbox.BG0H, Gruvbox.BG3, 1))
 	button.add_theme_stylebox_override("hover", _flat_stylebox(Gruvbox.BG1, _accent, 1))
@@ -374,7 +355,6 @@ func _style_choice_button(button: Button) -> void:
 	button.add_theme_font_size_override("font_size", 17)
 
 
-# Style the prompt, skip, and save buttons
 func _style_footer_buttons() -> void:
 	%FeedbackButton.add_theme_stylebox_override("normal", _flat_stylebox(Color(Gruvbox.GREEN, 0.08), Gruvbox.GREEN, 1))
 	%FeedbackButton.add_theme_stylebox_override("hover", _flat_stylebox(Color(Gruvbox.GREEN, 0.2), Gruvbox.GREEN, 1))
@@ -394,7 +374,6 @@ func _style_footer_buttons() -> void:
 	%SaveButton.add_theme_color_override("font_color", Gruvbox.GREEN)
 
 
-# Shared rounded stylebox for buttons and keys
 func _flat_stylebox(bg_color: Color, border_color: Color, border_width: int) -> StyleBoxFlat:
 	var style: StyleBoxFlat = StyleBoxFlat.new()
 	style.bg_color = bg_color
@@ -408,7 +387,6 @@ func _flat_stylebox(bg_color: Color, border_color: Color, border_width: int) -> 
 	return style
 
 
-# Yellow outline used for the focused control
 func _focus_stylebox() -> StyleBoxFlat:
 	var style: StyleBoxFlat = StyleBoxFlat.new()
 	style.draw_center = false

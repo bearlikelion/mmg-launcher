@@ -16,7 +16,6 @@ var _video_tiles: Array[Button] = []
 var _last_tile: Button = null
 
 
-# Connect the play button and overlays once the view enters the tree
 func _ready() -> void:
 	%PlayButton.pressed.connect(_on_play_button_pressed)
 	%VideoOverlay.closed.connect(_on_video_overlay_closed)
@@ -25,7 +24,6 @@ func _ready() -> void:
 	_style_controls_button()
 
 
-# Populate the terminal window from a game resource and play the opening animation
 func open(game: GameInfo, accent: Color) -> void:
 	_game = game
 	_accent = accent
@@ -58,6 +56,7 @@ func open(game: GameInfo, accent: Color) -> void:
 	dim_tween.tween_property(%Dim, "modulate:a", 1.0, 0.2)
 	UIAnimator.pop_in(%Window, 0.3)
 	await get_tree().create_timer(0.2).timeout
+	# Wait out the press that opened the view so it cannot also trigger Play
 	while Input.is_action_pressed("ui_accept"):
 		await get_tree().process_frame
 	if visible and not _closing:
@@ -68,7 +67,6 @@ func open(game: GameInfo, accent: Color) -> void:
 			_start_pulse()
 
 
-# Play the closing animation, hide the view, and notify the launcher
 func close() -> void:
 	if _closing or not visible:
 		return
@@ -84,7 +82,6 @@ func close() -> void:
 	closed.emit()
 
 
-# Reflect whether the selected game is currently running
 func set_running(running: bool) -> void:
 	%PlayButton.disabled = running
 	%PlayButton.text = "RUNNING..." if running else "▶  PLAY"
@@ -94,12 +91,10 @@ func set_running(running: bool) -> void:
 		_start_pulse()
 
 
-# Shake the window when a launch attempt fails
 func play_error_feedback() -> void:
 	UIAnimator.shake(%Window)
 
 
-# Terminal prompt line above the game details
 func _prompt_bbcode(game: GameInfo) -> String:
 	var slug: String = game.title.to_lower().replace(" ", "-")
 	return "[color=#%s]mark@launcher[/color] [color=#%s]~/games[/color] [color=#%s]$[/color] cat %s.md" % [
@@ -107,7 +102,6 @@ func _prompt_bbcode(game: GameInfo) -> String:
 	]
 
 
-# File-tree style metadata block listing date, dev time, features, and launch target
 func _meta_bbcode(game: GameInfo) -> String:
 	var rows: Array[String] = []
 	if not game.developer.is_empty():
@@ -139,21 +133,18 @@ func _meta_bbcode(game: GameInfo) -> String:
 	return "\n".join(lines)
 
 
-# One key/value row of the metadata tree
 func _meta_row(key: String, value: String, value_color: Color) -> String:
 	return "[color=#%s]%s:[/color] [color=#%s]%s[/color]" % [
 		Gruvbox.BLUE.to_html(false), key, value_color.to_html(false), value
 	]
 
 
-# Shell-style launch command shown next to the play button
 func _launch_bbcode(game: GameInfo) -> String:
 	return "[color=#%s]$[/color] [color=#%s]%s[/color]" % [
 		Gruvbox.GRAY.to_html(false), Gruvbox.FG2.to_html(false), game.launch_line()
 	]
 
 
-# Fill the media strip with screenshot thumbnails and playable video tiles
 func _populate_media(game: GameInfo) -> void:
 	_video_tiles.clear()
 	for child: Node in %MediaStrip.get_children():
@@ -169,7 +160,6 @@ func _populate_media(game: GameInfo) -> void:
 	%MediaStrip.visible = shown > 0
 
 
-# Build a thumbnail control for one media resource
 func _build_media_item(item: Resource, game: GameInfo) -> Control:
 	if item is Texture2D:
 		var rect: TextureRect = TextureRect.new()
@@ -184,7 +174,6 @@ func _build_media_item(item: Resource, game: GameInfo) -> Control:
 	return null
 
 
-# Build a focusable gallery tile that previews on highlight and plays fullscreen when pressed
 func _build_video_tile(stream: VideoStream, game: GameInfo) -> Button:
 	var tile: Button = Button.new()
 	tile.custom_minimum_size = _video_tile_size(game)
@@ -254,7 +243,7 @@ func _build_video_tile(stream: VideoStream, game: GameInfo) -> Button:
 	return tile
 
 
-# Size gallery tiles to share the cover column width, small thumbs for regular games
+# Video entries share the cover column width, regular games get small thumbs
 func _video_tile_size(game: GameInfo) -> Vector2:
 	if not game.is_video():
 		return THUMB_SIZE
@@ -263,7 +252,7 @@ func _video_tile_size(game: GameInfo) -> Vector2:
 	return Vector2(width, roundf(width * 9.0 / 16.0))
 
 
-# Decode the first frame so an unfocused tile shows a dimmed poster instead of black
+# Decode a first frame so an unfocused tile shows a poster instead of black
 func _prime_preview(tile: Button) -> void:
 	var player: VideoStreamPlayer = tile.get_meta("player") as VideoStreamPlayer
 	if not tile.is_inside_tree():
@@ -280,7 +269,6 @@ func _prime_preview(tile: Button) -> void:
 		_refresh_tile(tile)
 
 
-# Play the preview only while its tile is highlighted, dimmed poster otherwise
 func _refresh_tile(tile: Button) -> void:
 	if not is_instance_valid(tile) or not tile.has_meta("player"):
 		return
@@ -295,7 +283,6 @@ func _refresh_tile(tile: Button) -> void:
 	glyph.visible = not active
 
 
-# Bordered stylebox used for the gallery tile states
 func _tile_stylebox(border_color: Color, border_width: int) -> StyleBoxFlat:
 	var style: StyleBoxFlat = StyleBoxFlat.new()
 	style.bg_color = Gruvbox.BG0H
@@ -305,13 +292,11 @@ func _tile_stylebox(border_color: Color, border_width: int) -> StyleBoxFlat:
 	return style
 
 
-# Re-evaluate every tile's preview state, e.g. around fullscreen playback
 func _refresh_all_tiles() -> void:
 	for tile: Button in _video_tiles:
 		_refresh_tile(tile)
 
 
-# Open the fullscreen player for a pressed gallery tile
 func _on_video_tile_pressed(stream: VideoStream, tile: Button) -> void:
 	if %VideoOverlay.visible:
 		return
@@ -321,7 +306,6 @@ func _on_video_tile_pressed(stream: VideoStream, tile: Button) -> void:
 	_refresh_all_tiles()
 
 
-# Restore focus and previews when the fullscreen player closes
 func _on_video_overlay_closed() -> void:
 	_refresh_all_tiles()
 	if not visible or _closing:
@@ -332,13 +316,11 @@ func _on_video_overlay_closed() -> void:
 		_start_pulse()
 
 
-# Begin the idle pulse on the play button
 func _start_pulse() -> void:
 	_stop_pulse()
 	_pulse_tween = UIAnimator.pulse(%PlayButton, 1.03, 1.2)
 
 
-# Stop the idle pulse and reset the button scale
 func _stop_pulse() -> void:
 	if _pulse_tween != null and _pulse_tween.is_valid():
 		_pulse_tween.kill()
@@ -346,20 +328,17 @@ func _stop_pulse() -> void:
 	%PlayButton.offset_transform_scale = Vector2.ONE
 
 
-# Open the controller layout overlay for the current game
 func _on_controls_pressed() -> void:
 	if _game == null or %ControlsOverlay.visible:
 		return
 	%ControlsOverlay.open(_game, _accent)
 
 
-# Return focus to the controls button when the layout overlay closes
 func _on_controls_closed() -> void:
 	if visible and not _closing:
 		%ControlsButton.grab_focus()
 
 
-# Rounded pill styles matching the play button, tinted for the controls action
 func _style_controls_button() -> void:
 	var normal: StyleBoxFlat = _controls_stylebox(Color(Gruvbox.BLUE, 0.08))
 	var hover: StyleBoxFlat = _controls_stylebox(Color(Gruvbox.BLUE, 0.18))
@@ -377,7 +356,6 @@ func _style_controls_button() -> void:
 	%ControlsButton.add_theme_stylebox_override("focus", focus)
 
 
-# One pill stylebox for the controls button states
 func _controls_stylebox(bg_color: Color) -> StyleBoxFlat:
 	var style: StyleBoxFlat = StyleBoxFlat.new()
 	style.bg_color = bg_color
@@ -391,6 +369,5 @@ func _controls_stylebox(bg_color: Color) -> StyleBoxFlat:
 	return style
 
 
-# Notify the launcher that the play button was pressed
 func _on_play_button_pressed() -> void:
 	launch_requested.emit()

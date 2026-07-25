@@ -1,7 +1,7 @@
 class_name Gruvbox
 extends RefCounted
 
-# Gruvbox palette shared with the GodotCon deck and markmakes.games
+# Palette shared with the GodotCon deck and markmakes.games
 
 const BG0H: Color = Color("1d2021")
 const BG0: Color = Color("282828")
@@ -22,6 +22,5 @@ const ORANGE: Color = Color("fe8019")
 const ACCENTS: Array[Color] = [AQUA, ORANGE, RED, GREEN, PURPLE, BLUE, YELLOW]
 
 
-# Pick a stable accent color for a card by its position in the row
 static func accent_for_index(index: int) -> Color:
 	return ACCENTS[index % ACCENTS.size()]

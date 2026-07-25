@@ -1,8 +1,7 @@
 class_name FeedbackDB
 extends RefCounted
 
-# Thin wrapper around godot-sqlite persisting post-play survey responses
-# in user://feedback.db.
+# godot-sqlite wrapper for post-play survey responses
 
 const TABLE_SQL: String = """
 CREATE TABLE IF NOT EXISTS feedback (
@@ -23,12 +22,11 @@ CREATE TABLE IF NOT EXISTS feedback (
 """
 
 
-# Location of the feedback database in the user data directory
 static func db_path() -> String:
 	return "user://feedback.db"
 
 
-# Insert one survey response, creating the table on first use
+# Creates the table on first use
 static func save_response(row: Dictionary) -> bool:
 	var db: SQLite = SQLite.new()
 	db.path = db_path()

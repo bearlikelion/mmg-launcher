@@ -5,24 +5,23 @@ signal confirmed
 signal cancelled
 
 
-# Style the two choices and wire their presses once
 func _ready() -> void:
 	_style_buttons()
+	_trap_focus()
 	%QuitButton.pressed.connect(_on_quit_pressed)
 	%StayButton.pressed.connect(_on_stay_pressed)
 
 
-# Pop the confirmation window and focus the safe option
 func open() -> void:
 	visible = true
 	%Dim.modulate.a = 0.0
 	var dim_tween: Tween = create_tween()
 	dim_tween.tween_property(%Dim, "modulate:a", 1.0, 0.15)
 	UIAnimator.pop_in(%Window, 0.25)
-	%StayButton.grab_focus()
+	# Deferred so the press that opened the dialog cannot land on a button
+	%StayButton.grab_focus.call_deferred()
 
 
-# B or Esc backs out without quitting
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
@@ -31,7 +30,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		_on_stay_pressed()
 
 
-# Confirm: hide and hand the actual quit back to the launcher
+# Keep directional navigation bouncing between the two buttons
+func _trap_focus() -> void:
+	var quit_path: NodePath = %QuitButton.get_path()
+	var stay_path: NodePath = %StayButton.get_path()
+	%QuitButton.focus_neighbor_left = stay_path
+	%QuitButton.focus_neighbor_right = stay_path
+	%QuitButton.focus_neighbor_top = quit_path
+	%QuitButton.focus_neighbor_bottom = quit_path
+	%QuitButton.focus_next = stay_path
+	%QuitButton.focus_previous = stay_path
+	%StayButton.focus_neighbor_left = quit_path
+	%StayButton.focus_neighbor_right = quit_path
+	%StayButton.focus_neighbor_top = stay_path
+	%StayButton.focus_neighbor_bottom = stay_path
+	%StayButton.focus_next = quit_path
+	%StayButton.focus_previous = quit_path
+
+
 func _on_quit_pressed() -> void:
 	if not visible:
 		return
@@ -39,7 +55,6 @@ func _on_quit_pressed() -> void:
 	confirmed.emit()
 
 
-# Cancel: hide and let the launcher restore focus
 func _on_stay_pressed() -> void:
 	if not visible:
 		return
@@ -47,7 +62,6 @@ func _on_stay_pressed() -> void:
 	cancelled.emit()
 
 
-# Red danger styling for quitting, green safe styling for staying
 func _style_buttons() -> void:
 	%QuitButton.add_theme_stylebox_override("normal", _flat_stylebox(Color(Gruvbox.RED, 0.08), Gruvbox.RED, 1))
 	%QuitButton.add_theme_stylebox_override("hover", _flat_stylebox(Color(Gruvbox.RED, 0.2), Gruvbox.RED, 1))
@@ -61,7 +75,6 @@ func _style_buttons() -> void:
 	%StayButton.add_theme_color_override("font_hover_color", Gruvbox.FG)
 
 
-# Shared rounded stylebox for the dialog buttons
 func _flat_stylebox(bg_color: Color, border_color: Color, border_width: int) -> StyleBoxFlat:
 	var style: StyleBoxFlat = StyleBoxFlat.new()
 	style.bg_color = bg_color
@@ -75,7 +88,6 @@ func _flat_stylebox(bg_color: Color, border_color: Color, border_width: int) -> 
 	return style
 
 
-# Yellow outline used for the focused control
 func _focus_stylebox() -> StyleBoxFlat:
 	var style: StyleBoxFlat = StyleBoxFlat.new()
 	style.draw_center = false

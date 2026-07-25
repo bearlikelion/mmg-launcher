@@ -1,19 +1,14 @@
 class_name UIAnimator
 extends RefCounted
 
-# Static tween helpers in the style of Godotwind / ProtonControlAnimation.
-# All effects use the Godot 4.7 Control offset transform properties, which
-# apply a purely visual transform on top of container layout, so cards can
-# scale and slide inside a GridContainer without the container fighting back.
+# Offset transforms are visual-only, so cards animate inside a container without it fighting back
 
 
-# Enable offset transforms on a control and center its pivot
 static func prepare(target: Control) -> void:
 	target.offset_transform_enabled = true
 	target.offset_transform_pivot_ratio = Vector2(0.5, 0.5)
 
 
-# Fade a control in while sliding it from a relative pixel offset
 static func slide_in(target: Control, from_offset: Vector2, duration: float = 0.3, delay: float = 0.0) -> Tween:
 	prepare(target)
 	target.modulate.a = 0.0
@@ -24,7 +19,6 @@ static func slide_in(target: Control, from_offset: Vector2, duration: float = 0.
 	return tween
 
 
-# Pop a control in with a springy overshoot scale and a fade
 static func pop_in(target: Control, duration: float = 0.4, delay: float = 0.0) -> Tween:
 	prepare(target)
 	target.modulate.a = 0.0
@@ -35,7 +29,6 @@ static func pop_in(target: Control, duration: float = 0.4, delay: float = 0.0) -
 	return tween
 
 
-# Shrink and fade a control out
 static func pop_out(target: Control, duration: float = 0.18, delay: float = 0.0) -> Tween:
 	prepare(target)
 	var tween: Tween = target.create_tween().set_parallel(true)
@@ -44,7 +37,6 @@ static func pop_out(target: Control, duration: float = 0.18, delay: float = 0.0)
 	return tween
 
 
-# Tween the visual scale of a control around its center
 static func scale_to(target: Control, target_scale: Vector2, duration: float = 0.15) -> Tween:
 	prepare(target)
 	var tween: Tween = target.create_tween()
@@ -52,7 +44,7 @@ static func scale_to(target: Control, target_scale: Vector2, duration: float = 0
 	return tween
 
 
-# Softly pulse the scale of a control forever, until the tween is killed
+# Loops until the returned tween is killed
 static func pulse(target: Control, amount: float = 1.04, period: float = 1.0) -> Tween:
 	prepare(target)
 	var tween: Tween = target.create_tween().set_loops()
@@ -61,7 +53,6 @@ static func pulse(target: Control, amount: float = 1.04, period: float = 1.0) ->
 	return tween
 
 
-# Quick horizontal shake for error feedback
 static func shake(target: Control, strength: float = 14.0) -> Tween:
 	prepare(target)
 	var tween: Tween = target.create_tween()

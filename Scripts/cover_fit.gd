@@ -5,7 +5,7 @@ const FRAME_ASPECT: float = 16.0 / 9.0
 const TOLERANCE: float = 1.08
 
 
-# Crop covers that are close to the 16:9 frame, letterbox anything wider or taller
+# Crop covers close to 16:9, letterbox anything further off
 static func apply(rect: TextureRect) -> void:
 	if rect.texture == null:
 		return

@@ -7,7 +7,6 @@ const LEFT_INPUTS: Array = ["lt", "lb", "left_stick", "dpad", "l3", "back"]
 const RIGHT_INPUTS: Array = ["rt", "rb", "y", "b", "a", "x", "right_stick", "r3", "start"]
 
 
-# Fill the columns for a game and take over input until closed
 func open(game: GameInfo, accent: Color) -> void:
 	var slug: String = game.title.to_lower().replace(" ", "-")
 	%PromptLine.text = "[color=#%s]mark@launcher[/color] [color=#%s]~/games[/color] [color=#%s]$[/color] cat %s/controls.cfg" % [
@@ -26,7 +25,6 @@ func open(game: GameInfo, accent: Color) -> void:
 	grab_focus.call_deferred()
 
 
-# Hide the overlay and hand focus back to the detail view
 func close() -> void:
 	if not visible:
 		return
@@ -34,7 +32,7 @@ func close() -> void:
 	closed.emit()
 
 
-# B closes, and A is swallowed so it cannot reach the view underneath
+# A is swallowed so it cannot reach the detail view underneath
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
@@ -45,7 +43,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-# Build the glyph rows for one side of the controller
 func _populate_column(column: VBoxContainer, inputs: Array, controls: Dictionary) -> void:
 	for child: Node in column.get_children():
 		child.queue_free()
@@ -64,7 +61,6 @@ func _populate_column(column: VBoxContainer, inputs: Array, controls: Dictionary
 		column.add_child(row)
 
 
-# One controller glyph in the gruvbox style
 func _make_glyph(input_id: String) -> Label:
 	var text: String = ""
 	var color: Color = Gruvbox.FG2

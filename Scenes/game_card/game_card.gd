@@ -12,14 +12,12 @@ var _entrance_tween: Tween = null
 var _focus_tween: Tween = null
 
 
-# Connect interaction signals when the card enters the tree
 func _ready() -> void:
 	focus_entered.connect(_on_focus_entered)
 	focus_exited.connect(_on_focus_exited)
 	pressed.connect(_on_pressed)
 
 
-# Fill the card from a GameInfo resource in the library
 func setup(game_data: GameInfo, index: int) -> void:
 	game = game_data
 	accent = Gruvbox.accent_for_index(index)
@@ -49,12 +47,11 @@ func setup(game_data: GameInfo, index: int) -> void:
 		%TabName.add_theme_stylebox_override("panel", tab_style)
 
 
-# Pop the card in as part of the staggered row entrance
 func play_entrance(delay: float) -> void:
 	_entrance_tween = UIAnimator.pop_in(self, 0.4, delay)
 
 
-# Kill a running entrance animation and snap to the settled state
+# Snap out of a mid-flight entrance so focus scaling starts from a known state
 func _settle() -> void:
 	if _entrance_tween != null and _entrance_tween.is_valid():
 		_entrance_tween.kill()
@@ -63,16 +60,15 @@ func _settle() -> void:
 		offset_transform_position = Vector2.ZERO
 
 
-# Grow the card when it gains focus
 func _on_focus_entered() -> void:
 	_settle()
+	# Lift above neighbors so the scaled card is not clipped by them
 	z_index = 1
 	if _focus_tween != null and _focus_tween.is_valid():
 		_focus_tween.kill()
 	_focus_tween = UIAnimator.scale_to(self, FOCUS_SCALE, 0.15)
 
 
-# Shrink the card back to normal size when focus moves away
 func _on_focus_exited() -> void:
 	z_index = 0
 	if _focus_tween != null and _focus_tween.is_valid():
@@ -80,6 +76,5 @@ func _on_focus_exited() -> void:
 	_focus_tween = UIAnimator.scale_to(self, Vector2.ONE, 0.15)
 
 
-# Tell the launcher this game was chosen
 func _on_pressed() -> void:
 	selected.emit(self)

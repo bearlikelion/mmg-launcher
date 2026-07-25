@@ -1,7 +1,7 @@
 class_name GameInfo
 extends Resource
 
-# Data for a single game shown in the launcher, authored as a .tres in Resources/Games/
+# Authored as a .tres in Resources/Games/
 
 enum Category { STEAM, PROTOTYPE, GAME_JAM, VIDEO, OPEN_SOURCE }
 
@@ -22,17 +22,14 @@ enum Category { STEAM, PROTOTYPE, GAME_JAM, VIDEO, OPEN_SOURCE }
 @export var steam_id: String = ""
 
 
-# A game launches through Steam when it has an app id
 func is_steam() -> bool:
 	return not steam_id.is_empty()
 
 
-# Video entries are watched in the launcher instead of launched
 func is_video() -> bool:
 	return category == Category.VIDEO
 
 
-# The playable clips inside the media list
 func video_streams() -> Array[VideoStream]:
 	var streams: Array[VideoStream] = []
 	for item: Resource in media:
@@ -41,7 +38,6 @@ func video_streams() -> Array[VideoStream]:
 	return streams
 
 
-# File name of the first clip, used for terminal-flavored labels
 func first_video_file() -> String:
 	var streams: Array[VideoStream] = video_streams()
 	if streams.is_empty():
@@ -49,16 +45,14 @@ func first_video_file() -> String:
 	return streams[0].file.get_file()
 
 
-# Translate a Linux-style executable name into the current platform's variant,
-# so game entries authored with .x86_64 paths launch .exe builds on Windows
+# Entries are authored with .x86_64 paths, so Windows launches the .exe sibling
 static func platform_executable(path: String) -> String:
 	if OS.has_feature("windows") and path.ends_with(".x86_64"):
 		return path.trim_suffix(".x86_64") + ".exe"
 	return path
 
 
-# Whether this entry can do anything on this machine: videos and Steam games
-# always work, local games need their executable to exist for this platform
+# Videos and Steam entries always work, local games need the executable present
 func is_available() -> bool:
 	if is_video() or is_steam():
 		return true
@@ -67,16 +61,11 @@ func is_available() -> bool:
 	return FileAccess.file_exists(resolved_executable_path())
 
 
-# Absolute filesystem path to the platform's executable, resolving res:// bundles
-# and paths relative to the launcher (Build/ in the editor, the binary's directory
-# in exports). Absolute paths that do not exist on this machine but contain a
-# Games/ folder are re-based onto the launcher directory, so editor-saved dev
-# paths still work on device
 func resolved_executable_path() -> String:
 	return platform_executable(_resolved_linux_path())
 
 
-# The resolved path as authored, before platform extension translation
+# Relative paths resolve against Build/ in the editor, the binary's dir in exports
 func _resolved_linux_path() -> String:
 	if executable_path.begins_with("res://") or executable_path.begins_with("user://"):
 		return ProjectSettings.globalize_path(executable_path)
@@ -86,6 +75,7 @@ func _resolved_linux_path() -> String:
 	if relative_path.is_absolute_path():
 		if FileAccess.file_exists(relative_path):
 			return relative_path
+		# Re-base editor-saved dev paths onto the launcher dir so they work on device
 		var games_index: int = relative_path.find("/Games/")
 		if games_index == -1:
 			return relative_path
@@ -96,7 +86,6 @@ func _resolved_linux_path() -> String:
 	return base_dir.path_join(relative_path)
 
 
-# Lowercase file-style name shown in the card editor tab
 func tab_name() -> String:
 	if is_video():
 		return first_video_file()
@@ -107,7 +96,6 @@ func tab_name() -> String:
 	return platform_executable("%s.x86_64" % title.to_lower().replace(" ", "-"))
 
 
-# Shell-flavored launch line shown in the detail view footer
 func launch_line() -> String:
 	if is_video():
 		return "mpv %s" % first_video_file()

@@ -41,7 +41,6 @@ var _cards: Array[GameCard] = []
 var _quit_return_focus: Control = null
 
 
-# Build the row of cards, bind controller buttons, and play the entrance animation
 func _ready() -> void:
 	_setup_controller_bindings()
 	%DetailView.launch_requested.connect(_on_launch_requested)
@@ -68,7 +67,6 @@ func _ready() -> void:
 		_show_status("No games enabled in the library")
 
 
-# Handle back navigation and quitting depending on the current state
 func _unhandled_input(event: InputEvent) -> void:
 	if _state == State.DETAIL:
 		if event.is_action_pressed("ui_cancel"):
@@ -87,21 +85,20 @@ func _unhandled_input(event: InputEvent) -> void:
 				_prompt_quit()
 
 
-# Ask for confirmation before closing the launcher
 func _prompt_quit() -> void:
 	_state = State.QUIT_CONFIRM
 	_quit_return_focus = get_viewport().gui_get_focus_owner()
+	_set_cards_focusable(false)
 	%QuitDialog.open()
 
 
-# Close the launcher once the player confirms
 func _on_quit_confirmed() -> void:
 	get_tree().quit()
 
 
-# Return to browsing when quitting is cancelled
 func _on_quit_cancelled() -> void:
 	_state = State.ROW
+	_set_cards_focusable(true)
 	if _quit_return_focus != null and is_instance_valid(_quit_return_focus):
 		_quit_return_focus.grab_focus.call_deferred()
 	elif _cards.size() > 0:
@@ -109,7 +106,14 @@ func _on_quit_cancelled() -> void:
 	_quit_return_focus = null
 
 
-# Restore fullscreen on refocus, and treat a refocus during a Steam session as the game ending
+# Directional focus searches the whole viewport, so cards must leave traversal under an overlay
+func _set_cards_focusable(focusable: bool) -> void:
+	var mode: Control.FocusMode = Control.FOCUS_ALL if focusable else Control.FOCUS_NONE
+	for card: GameCard in _cards:
+		card.focus_mode = mode
+
+
+# Steam gives no exit signal, so a refocus after the grace window means the game ended
 func _notification(what: int) -> void:
 	if what != NOTIFICATION_APPLICATION_FOCUS_IN:
 		return
@@ -121,7 +125,6 @@ func _notification(what: int) -> void:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 
-# Bind the controller A and B buttons to the built-in UI actions
 func _setup_controller_bindings() -> void:
 	var accept_button: InputEventJoypadButton = InputEventJoypadButton.new()
 	accept_button.button_index = JOY_BUTTON_A
@@ -133,7 +136,6 @@ func _setup_controller_bindings() -> void:
 		InputMap.action_add_event("ui_cancel", cancel_button)
 
 
-# Add one category header and its horizontal row of cards
 func _build_section(category: GameInfo.Category, category_games: Array[GameInfo]) -> void:
 	var accent: Color = CATEGORY_COLORS[category]
 	var section: VBoxContainer = VBoxContainer.new()
@@ -171,12 +173,12 @@ func _build_section(category: GameInfo.Category, category_games: Array[GameInfo]
 		_cards.append(card)
 
 
-# Defer the section scroll so it runs after the scroll container's own focus handling
+# Deferred so it runs after the ScrollContainer's own focus handling
 func _on_card_focus_entered(section: Control) -> void:
 	_scroll_section_into_view.call_deferred(section)
 
 
-# Keep the focused card's whole section, including its header, inside the scroll view
+# Keeps the section header on screen, not just the focused card
 func _scroll_section_into_view(section: Control) -> void:
 	var scroll: ScrollContainer = %CategoryScroll
 	var panel: StyleBox = scroll.get_theme_stylebox("panel")
@@ -189,9 +191,7 @@ func _scroll_section_into_view(section: Control) -> void:
 		scroll.scroll_vertical = int(section_bottom - view_height)
 
 
-# Tree-style summary line under the header listing category counts
 func _subheader_bbcode() -> String:
-	# var total: int = 0 if _library == null else _library.enabled_games().size()
 	var separator: String = " [color=#%s]::[/color] " % Gruvbox.BG3.to_html(false)
 	var parts: Array[String] = []
 	for category: GameInfo.Category in CATEGORY_ORDER:
@@ -199,14 +199,12 @@ func _subheader_bbcode() -> String:
 		if count > 0:
 			var title: String = (CATEGORY_TITLES[category] as String).to_lower()
 			parts.append("[color=#%s]%d %s[/color]" % [CATEGORY_COLORS[category].to_html(false), count, title])
-	# var summary: String = "[color=#%s]└─[/color] %d projects" % [Gruvbox.GRAY.to_html(false), total]
 	var summary: String = "[color=#%s]└─[/color] " % [Gruvbox.GRAY.to_html(false)]
 	if not parts.is_empty():
 		summary += separator + separator.join(parts)
 	return summary
 
 
-# Open the detail view for the chosen game
 func _on_card_selected(card: GameCard) -> void:
 	if _state != State.ROW:
 		return
@@ -217,14 +215,12 @@ func _on_card_selected(card: GameCard) -> void:
 	%DetailView.open(card.game, card.accent)
 
 
-# Return to the row once the detail view has finished closing
 func _on_detail_closed() -> void:
 	_state = State.ROW
 	%HintBar.text = ROW_HINTS
 	_show_row(_selected_card)
 
 
-# Route the launch to Steam or a local executable
 func _on_launch_requested() -> void:
 	if _state != State.DETAIL or _selected_card == null:
 		return
@@ -235,7 +231,6 @@ func _on_launch_requested() -> void:
 		_launch_local(game)
 
 
-# Hand the game over to Steam and block the launcher until the player comes back
 func _launch_steam(game: GameInfo) -> void:
 	var err: Error = OS.shell_open("steam://rungameid/%s" % game.steam_id)
 	if err != OK:
@@ -252,13 +247,11 @@ func _launch_steam(game: GameInfo) -> void:
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 
 
-# Return from a Steam game once the player comes back to the launcher
 func _end_steam_session() -> void:
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	_end_game_session()
 
 
-# Start a local executable, watch its process, and minimize the launcher
 func _launch_local(game: GameInfo) -> void:
 	var path: String = game.resolved_executable_path()
 	if not FileAccess.file_exists(path):
@@ -280,7 +273,6 @@ func _launch_local(game: GameInfo) -> void:
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 
 
-# Poll the running game and return to the menu once it exits
 func _on_process_timer_timeout() -> void:
 	if _running_pid > 0 and OS.is_process_running(_running_pid):
 		return
@@ -291,7 +283,6 @@ func _on_process_timer_timeout() -> void:
 	_end_game_session()
 
 
-# Close the playing overlay and ask for feedback before returning to the menu
 func _end_game_session() -> void:
 	%PlayingOverlay.close()
 	%DetailView.set_running(false)
@@ -303,18 +294,15 @@ func _end_game_session() -> void:
 		_finish_session()
 
 
-# Feedback surveys only run on kiosk builds and in the editor
 func _feedback_enabled() -> bool:
 	return OS.has_feature("kiosk") or OS.has_feature("editor")
 
 
-# Return to the detail view once the survey is answered or skipped
 func _on_survey_finished() -> void:
 	if _state == State.SURVEY:
 		_finish_session()
 
 
-# Shared tail of a play session: back to the detail view with a status line
 func _finish_session() -> void:
 	_state = State.DETAIL
 	%DetailView.close()
@@ -322,14 +310,12 @@ func _finish_session() -> void:
 		_show_status("Finished playing %s" % _selected_card.game.title)
 
 
-# Fade the category rows out while the detail view is open
 func _hide_row() -> void:
 	var tween: Tween = create_tween()
 	tween.tween_property(%CategoryScroll, "modulate:a", 0.0, 0.12)
 	tween.tween_callback(func() -> void: %CategoryScroll.visible = false)
 
 
-# Bring the category rows back and restore focus to the last played game
 func _show_row(focus_card: GameCard) -> void:
 	%CategoryScroll.visible = true
 	UIAnimator.slide_in(%CategoryScroll, Vector2(0.0, 20.0), 0.22)
@@ -337,7 +323,5 @@ func _show_row(focus_card: GameCard) -> void:
 		focus_card.grab_focus.call_deferred()
 
 
-# Show a short status message under the row
-func _show_status
-(message: String) -> void:
+func _show_status(message: String) -> void:
 	%StatusLabel.text = message
